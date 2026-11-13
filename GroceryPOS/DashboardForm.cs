@@ -149,6 +149,21 @@ namespace GroceryPOS
                     purchasesForm.ShowDialog(this);
                 }
             };
+            var openShiftsButton = new Button
+            {
+                Text = "الورديات والصندوق",
+                Width = 180,
+                Height = 48,
+                Location = new Point(440, 320),
+                Visible = user.HasPermission("Shifts.Operate")
+            };
+            openShiftsButton.Click += (sender, args) =>
+            {
+                using (var shiftsForm = new ShiftManagementForm(user))
+                {
+                    shiftsForm.ShowDialog(this);
+                }
+            };
             var logoutButton = new Button
             {
                 Text = "تسجيل الخروج",
@@ -170,6 +185,7 @@ namespace GroceryPOS
             content.Controls.Add(logoutButton);
             content.Controls.Add(openSuppliersButton);
             content.Controls.Add(openPurchasesButton);
+            content.Controls.Add(openShiftsButton);
             var layout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
