@@ -214,125 +214,58 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class PasswordManagementForm : Form
+    public partial class PasswordManagementForm : Form
     {
         private readonly AuthenticatedUser user;
         private readonly int? targetUserId;
         private readonly bool forcedChange;
-        private TextBox currentPasswordTextBox;
-        private TextBox newPasswordTextBox;
-        private TextBox confirmPasswordTextBox;
+
+        public PasswordManagementForm()
+        {
+            InitializeComponent();
+        }
 
         internal PasswordManagementForm(AuthenticatedUser authenticatedUser, bool requireChange)
+            : this()
         {
             user = authenticatedUser;
             forcedChange = requireChange;
-            InitializeForm(null);
+            ConfigureMode(null);
+            saveButton.Click += SaveButton_Click;
         }
 
         internal PasswordManagementForm(
             AuthenticatedUser administrator,
             int targetId,
             string targetName)
+            : this()
         {
             user = administrator;
             targetUserId = targetId;
-            InitializeForm(targetName);
+            ConfigureMode(targetName);
+            saveButton.Click += SaveButton_Click;
         }
 
-        private void InitializeForm(string targetName)
+        private void ConfigureMode(string targetName)
         {
             bool isReset = targetUserId.HasValue;
             Text = isReset ? "إعادة تعيين كلمة المرور" : "تغيير كلمة المرور";
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
             ClientSize = new Size(520, isReset ? 330 : 390);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
 
-            string instruction = isReset
+            instructionLabel.Text = isReset
                 ? "أدخل كلمة مرور مؤقتة للمستخدم " + targetName + ". سيُطلب منه تغييرها عند الدخول."
                 : forcedChange
                     ? "يجب تغيير كلمة المرور المؤقتة قبل متابعة استخدام النظام."
                     : "أدخل كلمة المرور الحالية ثم كلمة المرور الجديدة.";
-            Controls.Add(new Label
-            {
-                Text = instruction,
-                AutoSize = false,
-                Width = 450,
-                Height = 42,
-                Location = new Point(35, 18)
-            });
-
-            int top = 70;
-            currentPasswordTextBox = null;
-            if (!isReset)
-            {
-                Controls.Add(new Label
-                {
-                    Text = "كلمة المرور الحالية",
-                    AutoSize = true,
-                    Location = new Point(370, top + 4)
-                });
-                currentPasswordTextBox = AddPasswordField(top);
-                top += 55;
-            }
-
-            Controls.Add(new Label
-            {
-                Text = "كلمة المرور الجديدة (12 حرفًا على الأقل)",
-                AutoSize = true,
-                Location = new Point(235, top + 4)
-            });
-            newPasswordTextBox = AddPasswordField(top);
-            top += 55;
-
-            Controls.Add(new Label
-            {
-                Text = "تأكيد كلمة المرور",
-                AutoSize = true,
-                Location = new Point(370, top + 4)
-            });
-            confirmPasswordTextBox = AddPasswordField(top);
-            top += 70;
-
-            var save = new Button
-            {
-                Text = isReset ? "إعادة التعيين" : "حفظ",
-                Location = new Point(295, top),
-                Width = 130,
-                Height = 36
-            };
-            save.Click += SaveButton_Click;
-            Controls.Add(save);
-            var cancel = new Button
-            {
-                Text = "إلغاء",
-                Location = new Point(180, top),
-                Width = 95,
-                Height = 36,
-                DialogResult = DialogResult.Cancel
-            };
-            cancel.Click += (sender, args) => Close();
-            Controls.Add(cancel);
-            AcceptButton = save;
-            CancelButton = cancel;
-        }
-
-        private TextBox AddPasswordField(int top)
-        {
-            var textBox = new TextBox
-            {
-                Location = new Point(35, top),
-                Width = 310,
-                MaxLength = 128,
-                UseSystemPasswordChar = true
-            };
-            Controls.Add(textBox);
-            return textBox;
+            currentPasswordLabel.Visible = !isReset;
+            currentPasswordTextBox.Visible = !isReset;
+            newPasswordLabel.Location = new Point(235, isReset ? 74 : 129);
+            newPasswordTextBox.Location = new Point(35, isReset ? 70 : 125);
+            confirmPasswordLabel.Location = new Point(370, isReset ? 129 : 184);
+            confirmPasswordTextBox.Location = new Point(35, isReset ? 125 : 180);
+            saveButton.Text = isReset ? "إعادة التعيين" : "حفظ";
+            saveButton.Location = new Point(295, isReset ? 195 : 250);
+            cancelButton.Location = new Point(180, isReset ? 195 : 250);
         }
 
         private void SaveButton_Click(object sender, EventArgs e)

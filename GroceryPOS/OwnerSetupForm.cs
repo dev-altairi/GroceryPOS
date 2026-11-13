@@ -1,76 +1,18 @@
 using System;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
 namespace GroceryPOS
 {
-    internal sealed class OwnerSetupForm : Form
+    public partial class OwnerSetupForm : Form
     {
-        private readonly TextBox fullNameTextBox;
-        private readonly TextBox usernameTextBox;
-        private readonly TextBox passwordTextBox;
-        private readonly TextBox confirmPasswordTextBox;
-
         internal AuthenticatedUser AuthenticatedUser { get; private set; }
 
-        internal OwnerSetupForm()
+        public OwnerSetupForm()
         {
-            Text = "الإعداد الأولي - GroceryPOS";
-            StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ClientSize = new Size(470, 390);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var title = new Label
-            {
-                Text = "إنشاء حساب المالك",
-                Font = new Font("Segoe UI", 17F, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(135, 20)
-            };
-            Controls.Add(title);
-            Controls.Add(new Label
-            {
-                Text = "أنشئ الحساب الأول. كلمة المرور لا تقل عن 12 حرفًا.",
-                AutoSize = true,
-                Location = new Point(67, 65)
-            });
-
-            fullNameTextBox = AddField("الاسم الكامل", 110);
-            usernameTextBox = AddField("اسم المستخدم", 160);
-            passwordTextBox = AddField("كلمة المرور", 210, true);
-            confirmPasswordTextBox = AddField("تأكيد كلمة المرور", 260, true);
-
-            var createButton = new Button
-            {
-                Text = "إنشاء الحساب",
-                Location = new Point(165, 320),
-                Width = 150,
-                Height = 38
-            };
+            InitializeComponent();
             createButton.Click += CreateButton_Click;
-            Controls.Add(createButton);
-            AcceptButton = createButton;
-        }
-
-        private TextBox AddField(string label, int top, bool password = false)
-        {
-            Controls.Add(new Label { Text = label, AutoSize = true, Location = new Point(355, top + 4) });
-            var textBox = new TextBox
-            {
-                Location = new Point(35, top),
-                Width = 290,
-                MaxLength = password ? 128 : (label == "الاسم الكامل" ? 150 : 50),
-                UseSystemPasswordChar = password
-            };
-            Controls.Add(textBox);
-            return textBox;
         }
 
         private void CreateButton_Click(object sender, EventArgs e)
