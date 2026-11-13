@@ -115,6 +115,30 @@
     </Compile>
     <Compile Include="Purchasing.cs" />
     <Compile Include="PurchasingForms.cs" />
+    <Compile Include="PurchasesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PurchasesForm.Designer.cs">
+      <DependentUpon>PurchasesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PurchaseInvoiceDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PurchaseInvoiceDetailsForm.Designer.cs">
+      <DependentUpon>PurchaseInvoiceDetailsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SupplierManagementForm.Designer.cs">
+      <DependentUpon>SupplierManagementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SupplierEditorForm.Designer.cs">
+      <DependentUpon>SupplierEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sales.cs" />
     <Compile Include="SalesForms.cs">
       <SubType>Form</SubType>

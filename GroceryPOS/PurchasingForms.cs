@@ -10,44 +10,23 @@ using System.Windows.Forms;
 
 namespace GroceryPOS
 {
-    internal sealed class SupplierManagementForm : Form
+    public partial class SupplierManagementForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly TextBox searchTextBox;
-        private readonly DataGridView grid;
-        private readonly Button addButton;
-        private readonly Button editButton;
-        private readonly Button toggleButton;
-        private readonly Label status;
-        private readonly Timer searchTimer;
+        private AuthenticatedUser user;
+        private Timer searchTimer;
+
+        public SupplierManagementForm()
+        {
+            InitializeComponent();
+        }
 
         internal SupplierManagementForm(AuthenticatedUser authenticatedUser)
+            : this()
         {
             user = authenticatedUser;
-            Text = "إدارة الموردين";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(900, 520);
-            MinimumSize = new Size(720, 400);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var toolbar = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Height = 58,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                Padding = new Padding(8)
-            };
-            addButton = CreateButton("إضافة مورد");
             addButton.Visible = user.HasPermission("Suppliers.Manage");
             addButton.Click += (sender, args) => OpenEditor(null);
-            toolbar.Controls.Add(addButton);
-
-            editButton = CreateButton("تعديل");
             editButton.Visible = user.HasPermission("Suppliers.Manage");
-            editButton.Enabled = false;
             editButton.Click += (sender, args) =>
             {
                 SupplierRecord selected = SelectedSupplier();
@@ -56,27 +35,8 @@ namespace GroceryPOS
                     OpenEditor(selected);
                 }
             };
-            toolbar.Controls.Add(editButton);
-
-            toggleButton = CreateButton("تعطيل");
             toggleButton.Visible = user.HasPermission("Suppliers.Manage");
-            toggleButton.Enabled = false;
             toggleButton.Click += ToggleButton_Click;
-            toolbar.Controls.Add(toggleButton);
-
-            toolbar.Controls.Add(new Label
-            {
-                Text = "بحث:",
-                AutoSize = true,
-                Margin = new Padding(10, 10, 3, 0)
-            });
-            searchTextBox = new TextBox
-            {
-                Width = 220,
-                MaxLength = 200,
-                Margin = new Padding(4, 4, 4, 4)
-            };
-            toolbar.Controls.Add(searchTextBox);
             searchTimer = new Timer { Interval = 300 };
             searchTimer.Tick += (sender, args) =>
             {
@@ -88,39 +48,8 @@ namespace GroceryPOS
                 searchTimer.Stop();
                 searchTimer.Start();
             };
-
-            var refreshButton = CreateButton("تحديث");
             refreshButton.Click += (sender, args) => RefreshSuppliers();
-            toolbar.Controls.Add(refreshButton);
-            var closeButton = CreateButton("إغلاق");
             closeButton.Click += (sender, args) => Close();
-            toolbar.Controls.Add(closeButton);
-
-            grid = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White
-            };
-            grid.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Id", Visible = false
-            });
-            AddColumn("Name", "اسم المورد", 140);
-            AddColumn("Phone", "الهاتف", 85);
-            AddColumn("Address", "العنوان", 120);
-            grid.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                DataPropertyName = "IsActive", HeaderText = "نشط", FillWeight = 55
-            });
             grid.SelectionChanged += (sender, args) => UpdateSelection();
             grid.CellDoubleClick += (sender, args) =>
             {
@@ -133,40 +62,8 @@ namespace GroceryPOS
                     }
                 }
             };
-
-            status = new Label
-            {
-                Dock = DockStyle.Bottom,
-                Height = 30,
-                TextAlign = ContentAlignment.MiddleRight,
-                Padding = new Padding(10, 0, 10, 0)
-            };
-            Controls.Add(grid);
-            Controls.Add(status);
-            Controls.Add(toolbar);
             Shown += (sender, args) => RefreshSuppliers();
             FormClosed += (sender, args) => searchTimer.Dispose();
-        }
-
-        private static Button CreateButton(string text)
-        {
-            return new Button
-            {
-                Text = text,
-                Width = 105,
-                Height = 32,
-                Margin = new Padding(3)
-            };
-        }
-
-        private void AddColumn(string property, string title, float weight)
-        {
-            grid.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight
-            });
         }
 
         private SupplierRecord SelectedSupplier()
@@ -290,36 +187,22 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class SupplierEditorForm : Form
+    public partial class SupplierEditorForm : Form
     {
-        private readonly TextBox nameTextBox;
-        private readonly TextBox phoneTextBox;
-        private readonly TextBox addressTextBox;
-        private readonly TextBox notesTextBox;
-
         internal string SupplierName { get { return nameTextBox.Text; } }
         internal string Phone { get { return phoneTextBox.Text; } }
         internal string Address { get { return addressTextBox.Text; } }
         internal string Notes { get { return notesTextBox.Text; } }
 
+        public SupplierEditorForm()
+        {
+            InitializeComponent();
+        }
+
         internal SupplierEditorForm(SupplierRecord current)
+            : this()
         {
             Text = current == null ? "إضافة مورد" : "تعديل مورد";
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ClientSize = new Size(500, 360);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            nameTextBox = AddField("اسم المورد", 25, 200);
-            phoneTextBox = AddField("الهاتف", 75, 30);
-            addressTextBox = AddField("العنوان", 125, 300);
-            notesTextBox = AddField("ملاحظات", 175, 500);
-            notesTextBox.Multiline = true;
-            notesTextBox.Height = 75;
             if (current != null)
             {
                 nameTextBox.Text = current.Name;
@@ -328,121 +211,39 @@ namespace GroceryPOS
                 notesTextBox.Text = current.Notes;
             }
 
-            var save = new Button
-            {
-                Text = "حفظ",
-                Location = new Point(285, 290),
-                Width = 90,
-                Height = 34
-            };
-            save.Click += (sender, args) =>
-            {
-                if (string.IsNullOrWhiteSpace(nameTextBox.Text))
-                {
-                    MessageBox.Show("اسم المورد مطلوب.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    nameTextBox.Focus();
-                    return;
-                }
-
-                DialogResult = DialogResult.OK;
-                Close();
-            };
-            Controls.Add(save);
-            var cancel = new Button
-            {
-                Text = "إلغاء",
-                Location = new Point(175, 290),
-                Width = 90,
-                Height = 34,
-                DialogResult = DialogResult.Cancel
-            };
-            cancel.Click += (sender, args) => Close();
-            Controls.Add(cancel);
-            AcceptButton = save;
-            CancelButton = cancel;
+            saveButton.Click += SaveButton_Click;
         }
 
-        private TextBox AddField(string label, int top, int maxLength)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
-            Controls.Add(new Label
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
             {
-                Text = label,
-                AutoSize = true,
-                Location = new Point(385, top + 4)
-            });
-            var textBox = new TextBox
-            {
-                Location = new Point(35, top),
-                Width = 325,
-                MaxLength = maxLength
-            };
-            Controls.Add(textBox);
-            return textBox;
+                MessageBox.Show("اسم المورد مطلوب.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                nameTextBox.Focus();
+                return;
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 
-    internal sealed class PurchasesForm : Form
+    public partial class PurchasesForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly DataGridView grid;
-        private readonly Label status;
+        private AuthenticatedUser user;
+
+        public PurchasesForm()
+        {
+            InitializeComponent();
+        }
 
         internal PurchasesForm(AuthenticatedUser authenticatedUser)
+            : this()
         {
             user = authenticatedUser;
-            Text = "فواتير المشتريات";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(1000, 560);
-            MinimumSize = new Size(800, 430);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var toolbar = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Height = 55,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                Padding = new Padding(8)
-            };
-            var addButton = CreateButton("استلام فاتورة");
             addButton.Click += AddInvoiceButton_Click;
-            toolbar.Controls.Add(addButton);
-            var refreshButton = CreateButton("تحديث");
             refreshButton.Click += (sender, args) => RefreshInvoices();
-            toolbar.Controls.Add(refreshButton);
-            var closeButton = CreateButton("إغلاق");
             closeButton.Click += (sender, args) => Close();
-            toolbar.Controls.Add(closeButton);
-
-            grid = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White
-            };
-            grid.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Id", Visible = false
-            });
-            AddColumn("InvoiceNo", "رقم الفاتورة", 80);
-            AddColumn("SupplierInvoiceNo", "رقم فاتورة المورد", 90);
-            AddColumn("SupplierName", "المورد", 120);
-            AddColumn("InvoiceDate", "التاريخ", 75, "d");
-            AddColumn("CurrencyCode", "العملة", 45);
-            AddColumn("Total", "الإجمالي", 75, "N4");
-            AddColumn("TotalBase", "الإجمالي بالعملة الأساسية", 95, "N4");
-            AddColumn("LineCount", "الأصناف", 50);
-            AddColumn("Status", "الحالة", 55);
             grid.CellDoubleClick += (sender, args) =>
             {
                 if (args.RowIndex >= 0)
@@ -454,45 +255,7 @@ namespace GroceryPOS
                     }
                 }
             };
-
-            status = new Label
-            {
-                Dock = DockStyle.Bottom,
-                Height = 30,
-                TextAlign = ContentAlignment.MiddleRight,
-                Padding = new Padding(10, 0, 10, 0)
-            };
-            Controls.Add(grid);
-            Controls.Add(status);
-            Controls.Add(toolbar);
             Shown += (sender, args) => RefreshInvoices();
-        }
-
-        private static Button CreateButton(string text)
-        {
-            return new Button
-            {
-                Text = text,
-                Width = 125,
-                Height = 32,
-                Margin = new Padding(4)
-            };
-        }
-
-        private void AddColumn(string property, string title, float weight, string format = null)
-        {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
-            }
-
-            grid.Columns.Add(column);
         }
 
         private PurchaseInvoiceRecord SelectedInvoice()
@@ -853,88 +616,29 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class PurchaseInvoiceDetailsForm : Form
+    public partial class PurchaseInvoiceDetailsForm : Form
     {
+        public PurchaseInvoiceDetailsForm()
+        {
+            InitializeComponent();
+        }
+
         internal PurchaseInvoiceDetailsForm(
             PurchaseInvoiceRecord invoice,
             IList<PurchaseInvoiceLineRecord> lines)
+            : this()
         {
             Text = "تفاصيل فاتورة " + invoice.InvoiceNo;
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(880, 480);
-            MinimumSize = new Size(720, 500);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            Controls.Add(new Label
-            {
-                Text = string.Format(
-                    CultureInfo.CurrentCulture,
-                    "المورد: {0}    رقم المورد: {1}    التاريخ: {2:d}    الإجمالي: {3:N4} {4}",
-                    invoice.SupplierName,
-                    string.IsNullOrEmpty(invoice.SupplierInvoiceNo) ? "—" : invoice.SupplierInvoiceNo,
-                    invoice.InvoiceDate,
-                    invoice.Total,
-                    invoice.CurrencyCode),
-                AutoSize = true,
-                Location = new Point(25, 20)
-            });
-            var grid = new DataGridView
-            {
-                Location = new Point(20, 60),
-                Size = new Size(840, 360),
-                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White,
-                DataSource = new List<PurchaseInvoiceLineRecord>(lines)
-            };
-            AddColumn(grid, "ProductName", "المنتج", 135);
-            AddColumn(grid, "UnitName", "الوحدة", 65);
-            AddColumn(grid, "Quantity", "الكمية", 65, "N3");
-            AddColumn(grid, "QtyBase", "الكمية الأساسية", 75, "N3");
-            AddColumn(grid, "UnitPrice", "سعر الوحدة", 75, "N4");
-            AddColumn(grid, "LineTotal", "الإجمالي", 75, "N4");
-            AddColumn(grid, "BatchNo", "الدفعة", 70);
-            AddColumn(grid, "ExpiryDate", "الصلاحية", 75, "d");
-            Controls.Add(grid);
-            var close = new Button
-            {
-                Text = "إغلاق",
-                Location = new Point(390, 430),
-                Width = 95,
-                Height = 32,
-                Anchor = AnchorStyles.Bottom
-            };
-            close.Click += (sender, args) => Close();
-            Controls.Add(close);
-        }
-
-        private static void AddColumn(
-            DataGridView grid,
-            string property,
-            string title,
-            float weight,
-            string format = null)
-        {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
-            }
-
-            grid.Columns.Add(column);
+            headerLabel.Text = string.Format(
+                CultureInfo.CurrentCulture,
+                "المورد: {0}    رقم المورد: {1}    التاريخ: {2:d}    الإجمالي: {3:N4} {4}",
+                invoice.SupplierName,
+                string.IsNullOrEmpty(invoice.SupplierInvoiceNo) ? "—" : invoice.SupplierInvoiceNo,
+                invoice.InvoiceDate,
+                invoice.Total,
+                invoice.CurrencyCode);
+            linesGrid.DataSource = new List<PurchaseInvoiceLineRecord>(lines);
+            closeButton.Click += (sender, args) => Close();
         }
     }
 
