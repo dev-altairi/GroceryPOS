@@ -301,6 +301,7 @@ namespace GroceryPOS
             //
             // SalesForm
             //
+            this.ClientSize = new System.Drawing.Size(1000, 650);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.searchPanel);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
