@@ -8,39 +8,20 @@ using System.Windows.Forms;
 
 namespace GroceryPOS
 {
-    internal sealed class RoleManagementForm : Form
+    public partial class RoleManagementForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly DataGridView grid;
-        private readonly Button editButton;
-        private readonly Button toggleButton;
-        private readonly Label status;
+        private AuthenticatedUser user;
+
+        public RoleManagementForm()
+        {
+            InitializeComponent();
+        }
 
         internal RoleManagementForm(AuthenticatedUser authenticatedUser)
+            : this()
         {
             user = authenticatedUser;
-            Text = "إدارة الأدوار والصلاحيات";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(980, 560);
-            MinimumSize = new Size(780, 430);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var toolbar = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Height = 55,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                Padding = new Padding(8)
-            };
-            var addButton = CreateButton("إضافة دور");
             addButton.Click += (sender, args) => OpenEditor(null);
-            toolbar.Controls.Add(addButton);
-
-            editButton = CreateButton("تعديل الصلاحيات");
-            editButton.Enabled = false;
             editButton.Click += (sender, args) =>
             {
                 ManagedRoleRecord selected = SelectedRole();
@@ -49,50 +30,9 @@ namespace GroceryPOS
                     OpenEditor(selected);
                 }
             };
-            toolbar.Controls.Add(editButton);
-
-            toggleButton = CreateButton("تعطيل");
-            toggleButton.Enabled = false;
             toggleButton.Click += ToggleButton_Click;
-            toolbar.Controls.Add(toggleButton);
-
-            var refreshButton = CreateButton("تحديث");
             refreshButton.Click += (sender, args) => RefreshRoles();
-            toolbar.Controls.Add(refreshButton);
-
-            var closeButton = CreateButton("إغلاق");
             closeButton.Click += (sender, args) => Close();
-            toolbar.Controls.Add(closeButton);
-
-            grid = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White
-            };
-            grid.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Id", Visible = false
-            });
-            AddColumn("Name", "اسم الدور", 95);
-            AddColumn("Description", "الوصف", 120);
-            AddColumn("PermissionNames", "الصلاحيات", 210);
-            grid.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                DataPropertyName = "IsSystem", HeaderText = "نظام", FillWeight = 50
-            });
-            grid.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                DataPropertyName = "IsActive", HeaderText = "نشط", FillWeight = 50
-            });
             grid.SelectionChanged += (sender, args) => UpdateSelection();
             grid.CellDoubleClick += (sender, args) =>
             {
@@ -105,39 +45,7 @@ namespace GroceryPOS
                     }
                 }
             };
-
-            status = new Label
-            {
-                Dock = DockStyle.Bottom,
-                Height = 30,
-                TextAlign = ContentAlignment.MiddleRight,
-                Padding = new Padding(10, 0, 10, 0)
-            };
-            Controls.Add(grid);
-            Controls.Add(status);
-            Controls.Add(toolbar);
             Shown += (sender, args) => RefreshRoles();
-        }
-
-        private static Button CreateButton(string text)
-        {
-            return new Button
-            {
-                Text = text,
-                Width = 120,
-                Height = 32,
-                Margin = new Padding(4)
-            };
-        }
-
-        private void AddColumn(string property, string title, float weight)
-        {
-            grid.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight
-            });
         }
 
         private ManagedRoleRecord SelectedRole()
@@ -277,12 +185,8 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class RoleEditorForm : Form
+    public partial class RoleEditorForm : Form
     {
-        private readonly TextBox nameTextBox;
-        private readonly TextBox descriptionTextBox;
-        private readonly CheckedListBox permissionsListBox;
-
         internal string RoleName
         {
             get { return nameTextBox.Text; }
@@ -304,110 +208,44 @@ namespace GroceryPOS
             }
         }
 
+        public RoleEditorForm()
+        {
+            InitializeComponent();
+        }
+
         internal RoleEditorForm(ManagedRoleRecord current, IList<PermissionOption> permissions)
+            : this()
         {
             Text = current == null ? "إضافة دور" : "تعديل الدور";
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ClientSize = new Size(600, 650);
-            MinimumSize = new Size(600, 650);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            Controls.Add(new Label
-            {
-                Text = "اسم الدور",
-                AutoSize = true,
-                Location = new Point(490, 28)
-            });
-            nameTextBox = new TextBox
-            {
-                Location = new Point(35, 25),
-                Width = 420,
-                MaxLength = 100,
-                Text = current == null ? string.Empty : current.Name,
-                ReadOnly = current != null && current.IsSystem
-            };
-            Controls.Add(nameTextBox);
-
-            Controls.Add(new Label
-            {
-                Text = "الوصف",
-                AutoSize = true,
-                Location = new Point(520, 78)
-            });
-            descriptionTextBox = new TextBox
-            {
-                Location = new Point(35, 75),
-                Width = 420,
-                MaxLength = 300,
-                Text = current == null ? string.Empty : current.Description
-            };
-            Controls.Add(descriptionTextBox);
-
-            Controls.Add(new Label
-            {
-                Text = "الصلاحيات الممنوحة",
-                AutoSize = true,
-                Location = new Point(430, 125)
-            });
-            permissionsListBox = new CheckedListBox
-            {
-                Location = new Point(35, 150),
-                Width = 520,
-                Height = 420,
-                CheckOnClick = true,
-                IntegralHeight = false,
-                HorizontalScrollbar = true
-            };
+            nameTextBox.Text = current == null ? string.Empty : current.Name;
+            nameTextBox.ReadOnly = current != null && current.IsSystem;
+            descriptionTextBox.Text = current == null ? string.Empty : current.Description;
             foreach (PermissionOption permission in permissions)
             {
                 bool selected = current != null && current.PermissionIds.Contains(permission.Id);
                 permissionsListBox.Items.Add(permission, selected);
             }
 
-            Controls.Add(permissionsListBox);
-            var save = new Button
-            {
-                Text = "حفظ",
-                Location = new Point(355, 590),
-                Width = 90,
-                Height = 34
-            };
-            save.Click += (sender, args) =>
-            {
-                if (string.IsNullOrWhiteSpace(nameTextBox.Text))
-                {
-                    MessageBox.Show("أدخل اسم الدور.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    nameTextBox.Focus();
-                    return;
-                }
+            saveButton.Click += SaveButton_Click;
+        }
 
-                if (permissionsListBox.CheckedItems.Count == 0)
-                {
-                    MessageBox.Show("اختر صلاحية واحدة على الأقل.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                DialogResult = DialogResult.OK;
-                Close();
-            };
-            Controls.Add(save);
-            var cancel = new Button
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(nameTextBox.Text))
             {
-                Text = "إلغاء",
-                Location = new Point(245, 590),
-                Width = 90,
-                Height = 34,
-                DialogResult = DialogResult.Cancel
-            };
-            cancel.Click += (sender, args) => Close();
-            Controls.Add(cancel);
-            AcceptButton = save;
-            CancelButton = cancel;
+                MessageBox.Show("أدخل اسم الدور.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                nameTextBox.Focus();
+                return;
+            }
+
+            if (permissionsListBox.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("اختر صلاحية واحدة على الأقل.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

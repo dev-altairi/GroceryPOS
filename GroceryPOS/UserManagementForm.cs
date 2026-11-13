@@ -8,40 +8,20 @@ using System.Windows.Forms;
 
 namespace GroceryPOS
 {
-    internal sealed class UserManagementForm : Form
+    public partial class UserManagementForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly DataGridView grid;
-        private readonly Button editButton;
-        private readonly Button toggleButton;
-        private readonly Button resetPasswordButton;
-        private readonly Label status;
+        private AuthenticatedUser user;
+
+        public UserManagementForm()
+        {
+            InitializeComponent();
+        }
 
         internal UserManagementForm(AuthenticatedUser authenticatedUser)
+            : this()
         {
             user = authenticatedUser;
-            Text = "إدارة المستخدمين";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(920, 540);
-            MinimumSize = new Size(760, 420);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var toolbar = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Height = 55,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                Padding = new Padding(8)
-            };
-            var addButton = CreateButton("إضافة مستخدم");
             addButton.Click += (sender, args) => OpenEditor(null);
-            toolbar.Controls.Add(addButton);
-
-            editButton = CreateButton("تعديل");
-            editButton.Enabled = false;
             editButton.Click += (sender, args) =>
             {
                 ManagedUserRecord selected = SelectedUser();
@@ -50,56 +30,10 @@ namespace GroceryPOS
                     OpenEditor(selected);
                 }
             };
-            toolbar.Controls.Add(editButton);
-
-            toggleButton = CreateButton("تعطيل");
-            toggleButton.Enabled = false;
             toggleButton.Click += ToggleButton_Click;
-            toolbar.Controls.Add(toggleButton);
-
-            resetPasswordButton = CreateButton("إعادة كلمة المرور");
-            resetPasswordButton.Enabled = false;
             resetPasswordButton.Click += ResetPasswordButton_Click;
-            toolbar.Controls.Add(resetPasswordButton);
-
-            var refreshButton = CreateButton("تحديث");
             refreshButton.Click += (sender, args) => RefreshUsers();
-            toolbar.Controls.Add(refreshButton);
-
-            var closeButton = CreateButton("إغلاق");
             closeButton.Click += (sender, args) => Close();
-            toolbar.Controls.Add(closeButton);
-
-            grid = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White
-            };
-            grid.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = "Id", Visible = false
-            });
-            AddColumn("FullName", "الاسم", 120);
-            AddColumn("Username", "اسم المستخدم", 90);
-            AddColumn("RoleNames", "الأدوار", 150);
-            grid.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                DataPropertyName = "IsActive", HeaderText = "نشط", FillWeight = 55
-            });
-            grid.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                DataPropertyName = "MustChangePassword", HeaderText = "يلزم تغيير كلمة المرور", FillWeight = 95
-            });
-            AddColumn("LockedUntil", "القفل حتى", 90, "g");
             grid.SelectionChanged += (sender, args) => UpdateSelection();
             grid.CellDoubleClick += (sender, args) =>
             {
@@ -112,45 +46,7 @@ namespace GroceryPOS
                     }
                 }
             };
-
-            status = new Label
-            {
-                Dock = DockStyle.Bottom,
-                Height = 30,
-                TextAlign = ContentAlignment.MiddleRight,
-                Padding = new Padding(10, 0, 10, 0)
-            };
-            Controls.Add(grid);
-            Controls.Add(status);
-            Controls.Add(toolbar);
             Shown += (sender, args) => RefreshUsers();
-        }
-
-        private static Button CreateButton(string text)
-        {
-            return new Button
-            {
-                Text = text,
-                Width = 112,
-                Height = 32,
-                Margin = new Padding(4)
-            };
-        }
-
-        private void AddColumn(string property, string title, float weight, string format = null)
-        {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
-            }
-
-            grid.Columns.Add(column);
         }
 
         private ManagedUserRecord SelectedUser()
@@ -309,14 +205,8 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class UserEditorForm : Form
+    public partial class UserEditorForm : Form
     {
-        private readonly TextBox fullNameTextBox;
-        private readonly TextBox usernameTextBox;
-        private readonly TextBox passwordTextBox;
-        private readonly TextBox confirmPasswordTextBox;
-        private readonly CheckedListBox rolesListBox;
-
         internal string FullName
         {
             get { return fullNameTextBox.Text; }
@@ -348,154 +238,64 @@ namespace GroceryPOS
             }
         }
 
+        public UserEditorForm()
+        {
+            InitializeComponent();
+        }
+
         internal UserEditorForm(ManagedUserRecord current, IList<RoleOption> roles)
+            : this()
         {
             Text = current == null ? "إضافة مستخدم" : "تعديل مستخدم";
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ClientSize = new Size(500, 585);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            Controls.Add(new Label
-            {
-                Text = "الاسم الكامل",
-                AutoSize = true,
-                Location = new Point(380, 28)
-            });
-            fullNameTextBox = AddTextField(25, 150, 300);
-            fullNameTextBox.MaxLength = 150;
             fullNameTextBox.Text = current == null ? string.Empty : current.FullName;
-
-            Controls.Add(new Label
-            {
-                Text = "اسم المستخدم",
-                AutoSize = true,
-                Location = new Point(380, 78)
-            });
-            usernameTextBox = AddTextField(75, 150, 300);
-            usernameTextBox.MaxLength = 50;
             usernameTextBox.Text = current == null ? string.Empty : current.Username;
-
-            Controls.Add(new Label
-            {
-                Text = current == null ? "كلمة المرور المؤقتة (12 حرفًا على الأقل)" : "كلمة المرور لا تتغير هنا",
-                AutoSize = true,
-                Location = new Point(380, 128)
-            });
-            passwordTextBox = AddTextField(125, 150, 300);
-            passwordTextBox.MaxLength = 128;
-            passwordTextBox.UseSystemPasswordChar = true;
             passwordTextBox.Enabled = current == null;
-
-            Controls.Add(new Label
-            {
-                Text = "تأكيد كلمة المرور",
-                AutoSize = true,
-                Location = new Point(380, 178)
-            });
-            confirmPasswordTextBox = AddTextField(175, 150, 300);
-            confirmPasswordTextBox.MaxLength = 128;
-            confirmPasswordTextBox.UseSystemPasswordChar = true;
             confirmPasswordTextBox.Enabled = current == null;
-
-            Controls.Add(new Label
-            {
-                Text = "الأدوار",
-                AutoSize = true,
-                Location = new Point(410, 232)
-            });
-            rolesListBox = new CheckedListBox
-            {
-                Location = new Point(35, 255),
-                Width = 400,
-                Height = 230,
-                CheckOnClick = true,
-                IntegralHeight = false
-            };
+            passwordLabel.Text = current == null
+                ? "كلمة المرور المؤقتة (12 حرفًا على الأقل)"
+                : "كلمة المرور لا تتغير هنا";
             foreach (RoleOption role in roles)
             {
                 bool selected = current != null && current.RoleIds.Contains(role.Id);
                 rolesListBox.Items.Add(role, selected);
             }
 
-            Controls.Add(rolesListBox);
-            Controls.Add(new Label
-            {
-                Text = "يُطلب من المستخدم تغيير كلمة المرور المؤقتة عند أول دخول.",
-                AutoSize = true,
-                ForeColor = Color.DimGray,
-                Location = new Point(95, 490)
-            });
-
-            var save = new Button
-            {
-                Text = "حفظ",
-                Location = new Point(275, 525),
-                Width = 90,
-                Height = 32
-            };
-            save.Click += (sender, args) =>
-            {
-                if (string.IsNullOrWhiteSpace(fullNameTextBox.Text) ||
-                    string.IsNullOrWhiteSpace(usernameTextBox.Text))
-                {
-                    MessageBox.Show("أدخل الاسم واسم المستخدم.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (current == null && passwordTextBox.Text.Length < 12)
-                {
-                    MessageBox.Show("كلمة المرور يجب أن تكون من 12 حرفًا على الأقل.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    passwordTextBox.Focus();
-                    return;
-                }
-
-                if (current == null &&
-                    !string.Equals(passwordTextBox.Text, confirmPasswordTextBox.Text, StringComparison.Ordinal))
-                {
-                    MessageBox.Show("كلمتا المرور غير متطابقتين.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    confirmPasswordTextBox.Clear();
-                    confirmPasswordTextBox.Focus();
-                    return;
-                }
-
-                if (rolesListBox.CheckedItems.Count == 0)
-                {
-                    MessageBox.Show("اختر دورًا واحدًا على الأقل.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                DialogResult = DialogResult.OK;
-                Close();
-            };
-            Controls.Add(save);
-            var cancel = new Button
-            {
-                Text = "إلغاء",
-                Location = new Point(165, 525),
-                Width = 90,
-                Height = 32,
-                DialogResult = DialogResult.Cancel
-            };
-            cancel.Click += (sender, args) => Close();
-            Controls.Add(cancel);
-            AcceptButton = save;
-            CancelButton = cancel;
+            saveButton.Click += SaveButton_Click;
         }
 
-        private TextBox AddTextField(int top, int left, int width)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
-            var textBox = new TextBox
+            if (string.IsNullOrWhiteSpace(fullNameTextBox.Text) ||
+                string.IsNullOrWhiteSpace(usernameTextBox.Text))
             {
-                Location = new Point(left, top),
-                Width = width
-            };
-            Controls.Add(textBox);
-            return textBox;
+                MessageBox.Show("أدخل الاسم واسم المستخدم.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (passwordTextBox.Enabled && passwordTextBox.Text.Length < 12)
+            {
+                MessageBox.Show("كلمة المرور يجب أن تكون من 12 حرفًا على الأقل.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                passwordTextBox.Focus();
+                return;
+            }
+
+            if (passwordTextBox.Enabled &&
+                !string.Equals(passwordTextBox.Text, confirmPasswordTextBox.Text, StringComparison.Ordinal))
+            {
+                MessageBox.Show("كلمتا المرور غير متطابقتين.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                confirmPasswordTextBox.Clear();
+                confirmPasswordTextBox.Focus();
+                return;
+            }
+
+            if (rolesListBox.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("اختر دورًا واحدًا على الأقل.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }
