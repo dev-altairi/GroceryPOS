@@ -179,6 +179,21 @@ namespace GroceryPOS
                     salesForm.ShowDialog(this);
                 }
             };
+            var openSalesReturnsButton = new Button
+            {
+                Text = "مرتجعات المبيعات",
+                Width = 180,
+                Height = 48,
+                Location = new Point(50, 390),
+                Visible = user.HasPermission("Sales.Return")
+            };
+            openSalesReturnsButton.Click += (sender, args) =>
+            {
+                using (var returnsForm = new SalesReturnForm(user))
+                {
+                    returnsForm.ShowDialog(this);
+                }
+            };
             var logoutButton = new Button
             {
                 Text = "تسجيل الخروج",
@@ -202,6 +217,7 @@ namespace GroceryPOS
             content.Controls.Add(openPurchasesButton);
             content.Controls.Add(openShiftsButton);
             content.Controls.Add(openSalesButton);
+            content.Controls.Add(openSalesReturnsButton);
             var layout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,

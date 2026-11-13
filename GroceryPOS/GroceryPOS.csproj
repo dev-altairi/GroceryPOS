@@ -90,6 +90,10 @@
     <Compile Include="SalesForms.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SalesReturns.cs" />
+    <Compile Include="SalesReturnForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Shifts.cs" />
     <Compile Include="ShiftsForms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

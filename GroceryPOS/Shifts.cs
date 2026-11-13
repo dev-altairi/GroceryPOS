@@ -456,21 +456,13 @@ namespace GroceryPOS
             }
         }
 
-        private static IList<ShiftCashAmount> LoadExpectedCash(
+        internal static IList<ShiftCashAmount> LoadExpectedCash(
             SqlConnection connection,
             SqlTransaction transaction,
             int shiftId)
         {
             using (var command = new SqlCommand(
-                @"IF EXISTS
-                  (
-                      SELECT 1
-                      FROM dbo.SalesReturns r WITH (HOLDLOCK)
-                      WHERE r.ShiftId = @ShiftId AND r.RefundMethod = N'Cash'
-                  )
-                      THROW 51020, N'إغلاق وردية بها مرتجعات نقدية غير مدعوم حتى اكتمال احتساب مبالغ الرد بعملة الصندوق.', 1;
-
-                  SELECT sc.CurrencyId, c.Code, c.Name, c.DecimalPlaces, sc.OpeningAmount,
+                @"SELECT sc.CurrencyId, c.Code, c.Name, c.DecimalPlaces, sc.OpeningAmount,
                          CONVERT(decimal(28,4), sc.OpeningAmount
                          + ISNULL(movement.Amount, 0)
                          + ISNULL(sale.AmountPaid, 0)
