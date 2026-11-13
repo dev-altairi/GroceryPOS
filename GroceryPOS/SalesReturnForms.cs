@@ -17,12 +17,6 @@ namespace GroceryPOS
         private long currentInvoiceId;
         private string idempotencyKey = Guid.NewGuid().ToString("N");
 
-        public SalesReturnForm()
-        {
-            InitializeComponent();
-            linesGrid.DataSource = lines;
-        }
-
         internal SalesReturnForm(AuthenticatedUser authenticatedUser)
             : this()
         {

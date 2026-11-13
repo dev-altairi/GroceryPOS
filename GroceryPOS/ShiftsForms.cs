@@ -13,11 +13,6 @@ namespace GroceryPOS
     {
         private AuthenticatedUser user;
 
-        public ShiftManagementForm()
-        {
-            InitializeComponent();
-        }
-
         internal ShiftManagementForm(AuthenticatedUser authenticatedUser)
             : this()
         {
@@ -224,13 +219,6 @@ namespace GroceryPOS
             }
         }
 
-        public ShiftOpeningForm()
-        {
-            InitializeComponent();
-            rows = new BindingList<ShiftOpeningRow>();
-            grid.DataSource = rows;
-        }
-
         internal ShiftOpeningForm(IList<ShiftCurrency> currencies)
             : this()
         {
@@ -296,11 +284,6 @@ namespace GroceryPOS
         internal decimal Amount { get { return amountInput.Value; } }
         internal string Reason { get { return reasonInput.Text; } }
 
-        public CashMovementForm()
-        {
-            InitializeComponent();
-        }
-
         internal CashMovementForm(IList<ShiftCurrency> currencies)
             : this()
         {
@@ -350,13 +333,6 @@ namespace GroceryPOS
         }
 
         internal string CloseNotes { get { return notesInput.Text; } }
-
-        public ShiftClosingForm()
-        {
-            InitializeComponent();
-            rows = new BindingList<ShiftClosingRow>();
-            grid.DataSource = rows;
-        }
 
         internal ShiftClosingForm(ShiftRecord shift, IList<ShiftCashAmount> expected)
             : this()

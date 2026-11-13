@@ -238,11 +238,6 @@ namespace GroceryPOS
             }
         }
 
-        public UserEditorForm()
-        {
-            InitializeComponent();
-        }
-
         internal UserEditorForm(ManagedUserRecord current, IList<RoleOption> roles)
             : this()
         {

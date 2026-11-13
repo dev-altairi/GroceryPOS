@@ -75,13 +75,6 @@ namespace GroceryPOS
         private readonly BindingList<SaleCartItem> cart = new BindingList<SaleCartItem>();
         private string checkoutIdempotencyKey = Guid.NewGuid().ToString("N");
 
-        public SalesForm()
-        {
-            InitializeComponent();
-            resultsGrid.DataSource = new List<SaleUnitOption>();
-            cartGrid.DataSource = cart;
-        }
-
         internal SalesForm(AuthenticatedUser authenticatedUser)
             : this()
         {
@@ -376,13 +369,6 @@ namespace GroceryPOS
                 SaleCurrency currency = changeCurrencyComboBox.SelectedItem as SaleCurrency;
                 return currency == null ? (int?)null : currency.Id;
             }
-        }
-
-        public SalePaymentForm()
-        {
-            InitializeComponent();
-            rows = new BindingList<SalePaymentRow>();
-            grid.DataSource = rows;
         }
 
         internal SalePaymentForm(

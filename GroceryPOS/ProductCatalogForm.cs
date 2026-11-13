@@ -209,11 +209,6 @@ namespace GroceryPOS
         private readonly ProductRecord product;
         private bool canManage;
 
-        public ProductEditorForm()
-        {
-            InitializeComponent();
-        }
-
         internal ProductEditorForm(
             AuthenticatedUser authenticatedUser,
             IList<CatalogOption> categories,

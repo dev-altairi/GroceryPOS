@@ -15,11 +15,6 @@ namespace GroceryPOS
         private AuthenticatedUser user;
         private Timer searchTimer;
 
-        public SupplierManagementForm()
-        {
-            InitializeComponent();
-        }
-
         internal SupplierManagementForm(AuthenticatedUser authenticatedUser)
             : this()
         {
@@ -194,11 +189,6 @@ namespace GroceryPOS
         internal string Address { get { return addressTextBox.Text; } }
         internal string Notes { get { return notesTextBox.Text; } }
 
-        public SupplierEditorForm()
-        {
-            InitializeComponent();
-        }
-
         internal SupplierEditorForm(SupplierRecord current)
             : this()
         {
@@ -231,11 +221,6 @@ namespace GroceryPOS
     public partial class PurchasesForm : Form
     {
         private AuthenticatedUser user;
-
-        public PurchasesForm()
-        {
-            InitializeComponent();
-        }
 
         internal PurchasesForm(AuthenticatedUser authenticatedUser)
             : this()
@@ -357,12 +342,6 @@ namespace GroceryPOS
 
         internal string InvoiceNumber { get; private set; }
 
-        public PurchaseInvoiceEditorForm()
-        {
-            InitializeComponent();
-            productUnits = new List<ProductUnitOption>();
-        }
-
         internal PurchaseInvoiceEditorForm(
             AuthenticatedUser authenticatedUser,
             IList<SupplierOption> suppliers,
@@ -476,11 +455,6 @@ namespace GroceryPOS
 
     public partial class PurchaseInvoiceDetailsForm : Form
     {
-        public PurchaseInvoiceDetailsForm()
-        {
-            InitializeComponent();
-        }
-
         internal PurchaseInvoiceDetailsForm(
             PurchaseInvoiceRecord invoice,
             IList<PurchaseInvoiceLineRecord> lines)

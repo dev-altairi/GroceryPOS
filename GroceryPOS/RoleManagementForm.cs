@@ -208,11 +208,6 @@ namespace GroceryPOS
             }
         }
 
-        public RoleEditorForm()
-        {
-            InitializeComponent();
-        }
-
         internal RoleEditorForm(ManagedRoleRecord current, IList<PermissionOption> permissions)
             : this()
         {
