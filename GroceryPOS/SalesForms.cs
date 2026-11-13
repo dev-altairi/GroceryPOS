@@ -69,201 +69,34 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class SalesForm : Form
+    public partial class SalesForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly TextBox searchInput;
-        private readonly NumericUpDown quantityInput;
-        private readonly DataGridView resultsGrid;
-        private readonly DataGridView cartGrid;
+        private AuthenticatedUser user;
         private readonly BindingList<SaleCartItem> cart = new BindingList<SaleCartItem>();
-        private readonly Label totalLabel;
         private string checkoutIdempotencyKey = Guid.NewGuid().ToString("N");
 
+        public SalesForm()
+        {
+            InitializeComponent();
+            resultsGrid.DataSource = new List<SaleUnitOption>();
+            cartGrid.DataSource = cart;
+        }
+
         internal SalesForm(AuthenticatedUser authenticatedUser)
+            : this()
         {
             user = authenticatedUser;
-            Text = "نقطة البيع";
-            StartPosition = FormStartPosition.CenterParent;
-            WindowState = FormWindowState.Maximized;
-            MinimumSize = new Size(1000, 650);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var searchPanel = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 62,
-                Padding = new Padding(12)
-            };
-            searchInput = new TextBox
-            {
-                Location = new Point(420, 15),
-                Width = 360,
-                MaxLength = 200,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right
-            };
             searchInput.KeyDown += SearchInput_KeyDown;
-            searchPanel.Controls.Add(new Label
-            {
-                Text = "باركود أو اسم المنتج",
-                AutoSize = true,
-                Location = new Point(790, 18),
-                Anchor = AnchorStyles.Top | AnchorStyles.Right
-            });
-            searchPanel.Controls.Add(searchInput);
-
-            var searchButton = CreateButton("بحث");
-            searchButton.Location = new Point(300, 12);
             searchButton.Click += (sender, args) => SearchProducts();
-            searchPanel.Controls.Add(searchButton);
-
-            quantityInput = new NumericUpDown
-            {
-                Location = new Point(170, 15),
-                Width = 110,
-                DecimalPlaces = 3,
-                Increment = 1m,
-                Minimum = 0.001m,
-                Maximum = 999999999999999.999m,
-                Value = 1m,
-                TextAlign = HorizontalAlignment.Right
-            };
-            searchPanel.Controls.Add(new Label
-            {
-                Text = "الكمية",
-                AutoSize = true,
-                Location = new Point(285, 18)
-            });
-            searchPanel.Controls.Add(quantityInput);
-            var addButton = CreateButton("إضافة للسلة");
-            addButton.Location = new Point(35, 12);
             addButton.Click += (sender, args) => AddSelectedResult();
-            searchPanel.Controls.Add(addButton);
-
-            var split = new SplitContainer
-            {
-                Dock = DockStyle.Fill,
-                Orientation = Orientation.Horizontal,
-                SplitterDistance = 250,
-                RightToLeft = RightToLeft.Yes
-            };
-            resultsGrid = CreateGrid();
-            resultsGrid.DataSource = new List<SaleUnitOption>();
-            AddColumn(resultsGrid, "DisplayName", "المنتج والوحدة", 150, true);
-            AddColumn(resultsGrid, "Barcode", "الباركود", 70, true);
-            AddColumn(resultsGrid, "RetailPrice", "سعر البيع", 65, true, "N4");
-            AddColumn(resultsGrid, "AvailableQuantity", "المخزون الإجمالي", 75, true, "N3");
             resultsGrid.CellDoubleClick += (sender, args) => AddSelectedResult();
-            split.Panel1.Controls.Add(resultsGrid);
-
-            var cartPanel = new Panel { Dock = DockStyle.Fill };
-            cartGrid = CreateGrid();
-            cartGrid.AllowUserToAddRows = false;
-            cartGrid.DataSource = cart;
-            AddColumn(cartGrid, "ProductName", "المنتج", 110, true);
-            AddColumn(cartGrid, "UnitName", "الوحدة", 55, true);
-            AddColumn(cartGrid, "Quantity", "الكمية", 55, false, "N3");
-            AddColumn(cartGrid, "UnitPrice", "سعر الوحدة", 65, true, "N4");
-            AddColumn(
-                cartGrid,
-                "Discount",
-                "خصم",
-                55,
-                !user.HasPermission("Sales.Discount"),
-                "N4");
-            AddColumn(cartGrid, "LineTotal", "الإجمالي", 70, true, "N4");
+            discountColumn.ReadOnly = !user.HasPermission("Sales.Discount");
             cartGrid.CellValueChanged += (sender, args) => UpdateTotal();
             cartGrid.RowsRemoved += (sender, args) => UpdateTotal();
-            cartPanel.Controls.Add(cartGrid);
-
-            var footer = new Panel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 65,
-                Padding = new Padding(12)
-            };
-            totalLabel = new Label
-            {
-                AutoSize = true,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                Location = new Point(680, 18),
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Text = "الإجمالي: 0"
-            };
-            footer.Controls.Add(totalLabel);
-            var removeButton = CreateButton("حذف الصنف");
-            removeButton.Location = new Point(480, 12);
-            removeButton.Click += (sender, args) => RemoveSelectedItem();
-            footer.Controls.Add(removeButton);
-            var checkoutButton = CreateButton("الدفع وإتمام البيع");
-            checkoutButton.Width = 170;
-            checkoutButton.Location = new Point(285, 12);
-            checkoutButton.Click += CheckoutButton_Click;
-            footer.Controls.Add(checkoutButton);
-            var closeButton = CreateButton("إغلاق");
-            closeButton.Location = new Point(155, 12);
             closeButton.Click += (sender, args) => Close();
-            footer.Controls.Add(closeButton);
-
-            split.Panel2.Controls.Add(cartPanel);
-            split.Panel2.Controls.Add(footer);
-            Controls.Add(split);
-            Controls.Add(searchPanel);
+            removeButton.Click += (sender, args) => RemoveSelectedItem();
+            checkoutButton.Click += CheckoutButton_Click;
             Shown += (sender, args) => searchInput.Focus();
-        }
-
-        private static Button CreateButton(string text)
-        {
-            return new Button
-            {
-                Text = text,
-                Width = 120,
-                Height = 34,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right
-            };
-        }
-
-        private static DataGridView CreateGrid()
-        {
-            return new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = false,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White
-            };
-        }
-
-        private static void AddColumn(
-            DataGridView grid,
-            string property,
-            string title,
-            float weight,
-            bool readOnly,
-            string format = null)
-        {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight,
-                ReadOnly = readOnly
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
-            }
-
-            grid.Columns.Add(column);
         }
 
         private void SearchInput_KeyDown(object sender, KeyEventArgs e)
@@ -518,13 +351,10 @@ namespace GroceryPOS
         public decimal AmountPaid { get; set; }
     }
 
-    internal sealed class SalePaymentForm : Form
+    public partial class SalePaymentForm : Form
     {
-        private readonly SaleCurrency baseCurrency;
+        private SaleCurrency baseCurrency;
         private readonly BindingList<SalePaymentRow> rows;
-        private readonly DataGridView grid;
-        private readonly ComboBox changeCurrencyComboBox;
-        private readonly Label paidLabel;
 
         internal IList<SalePaymentDraft> Payments
         {
@@ -548,62 +378,35 @@ namespace GroceryPOS
             }
         }
 
+        public SalePaymentForm()
+        {
+            InitializeComponent();
+            rows = new BindingList<SalePaymentRow>();
+            grid.DataSource = rows;
+        }
+
         internal SalePaymentForm(
             decimal total,
             SaleCurrency baseCurrencyOption,
             IList<SaleCurrency> currencies)
+            : this()
         {
             baseCurrency = baseCurrencyOption;
-            Text = "الدفع";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(720, 490);
-            MinimumSize = new Size(640, 430);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
+            requiredLabel.Text = "المطلوب: " + total.ToString("N4", CultureInfo.CurrentCulture) +
+                                 " " + baseCurrency.Code;
+            foreach (SaleCurrency currency in currencies)
+            {
+                rows.Add(new SalePaymentRow
+                {
+                    CurrencyId = currency.Id,
+                    CurrencyCode = currency.Code,
+                    CurrencyName = currency.Name,
+                    DecimalPlaces = currency.DecimalPlaces,
+                    RateToBase = currency.RateToBase,
+                    AmountPaid = 0m
+                });
+            }
 
-            Controls.Add(new Label
-            {
-                Text = "المطلوب: " + total.ToString("N4", CultureInfo.CurrentCulture) +
-                       " " + baseCurrency.Code,
-                AutoSize = true,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                Location = new Point(400, 20)
-            });
-            Controls.Add(new Label
-            {
-                Text = "أدخل المبلغ المستلم في كل عملة. تُحوّل بقية العملات بسعر الصرف المسجل لهذا اليوم.",
-                AutoSize = true,
-                Location = new Point(25, 65)
-            });
-
-            rows = new BindingList<SalePaymentRow>(currencies.Select(currency => new SalePaymentRow
-            {
-                CurrencyId = currency.Id,
-                CurrencyCode = currency.Code,
-                CurrencyName = currency.Name,
-                DecimalPlaces = currency.DecimalPlaces,
-                RateToBase = currency.RateToBase,
-                AmountPaid = 0m
-            }).ToList());
-            grid = new DataGridView
-            {
-                Location = new Point(20, 100),
-                Size = new Size(680, 240),
-                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White,
-                DataSource = rows
-            };
-            AddColumn("CurrencyCode", "العملة", 45, true);
-            AddColumn("CurrencyName", "الوصف", 80, true);
-            AddColumn("RateToBase", "سعر الصرف", 75, true, "N6");
-            AddColumn("AmountPaid", "المبلغ المدفوع", 100, false, "N4");
             grid.CellValueChanged += (sender, args) => UpdatePaidTotal();
             grid.DataError += (sender, args) =>
             {
@@ -616,88 +419,24 @@ namespace GroceryPOS
                         "مبلغ الدفع غير صالح؛ راجع منازل العملة.");
                 }
             };
-            Controls.Add(grid);
-
-            Controls.Add(new Label
-            {
-                Text = "عملة الباقي",
-                AutoSize = true,
-                Location = new Point(595, 365)
-            });
-            changeCurrencyComboBox = new ComboBox
-            {
-                Location = new Point(285, 360),
-                Width = 290,
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                DataSource = new List<SaleCurrency>(currencies)
-            };
+            changeCurrencyComboBox.DataSource = new List<SaleCurrency>(currencies);
             changeCurrencyComboBox.SelectedItem = currencies.FirstOrDefault(currency => currency.IsBase);
-            Controls.Add(changeCurrencyComboBox);
-            paidLabel = new Label
-            {
-                AutoSize = true,
-                Location = new Point(25, 365),
-                Text = "المجموع بالعملة الأساسية: 0"
-            };
-            Controls.Add(paidLabel);
-
-            var save = new Button
-            {
-                Text = "تأكيد الدفع",
-                Location = new Point(385, 420),
-                Width = 115,
-                Height = 34,
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right
-            };
-            save.Click += (sender, args) =>
-            {
-                grid.EndEdit();
-                if (Payments.Count == 0)
-                {
-                    MessageBox.Show("أدخل مبلغًا مستلمًا واحدًا على الأقل.", Text,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                DialogResult = DialogResult.OK;
-                Close();
-            };
-            Controls.Add(save);
-            var cancel = new Button
-            {
-                Text = "إلغاء",
-                Location = new Point(260, 420),
-                Width = 100,
-                Height = 34,
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                DialogResult = DialogResult.Cancel
-            };
-            cancel.Click += (sender, args) => Close();
-            Controls.Add(cancel);
-            AcceptButton = save;
-            CancelButton = cancel;
+            saveButton.Click += SaveButton_Click;
+            UpdatePaidTotal();
         }
 
-        private void AddColumn(
-            string property,
-            string title,
-            float weight,
-            bool readOnly,
-            string format = null)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
-            var column = new DataGridViewTextBoxColumn
+            grid.EndEdit();
+            if (Payments.Count == 0)
             {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight,
-                ReadOnly = readOnly
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
+                MessageBox.Show("أدخل مبلغًا مستلمًا واحدًا على الأقل.", Text,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
-            grid.Columns.Add(column);
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void UpdatePaidTotal()

@@ -9,71 +9,25 @@ using System.Windows.Forms;
 
 namespace GroceryPOS
 {
-    internal sealed class SalesReturnForm : Form
+    public partial class SalesReturnForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly DataGridView invoicesGrid;
-        private readonly DataGridView linesGrid;
+        private AuthenticatedUser user;
         private readonly BindingList<SaleReturnLine> lines = new BindingList<SaleReturnLine>();
         private readonly Dictionary<long, string> idempotencyKeys = new Dictionary<long, string>();
-        private readonly TextBox reasonInput;
-        private readonly Label totalLabel;
         private long currentInvoiceId;
         private string idempotencyKey = Guid.NewGuid().ToString("N");
 
+        public SalesReturnForm()
+        {
+            InitializeComponent();
+            linesGrid.DataSource = lines;
+        }
+
         internal SalesReturnForm(AuthenticatedUser authenticatedUser)
+            : this()
         {
             user = authenticatedUser;
-            Text = "مرتجعات المبيعات";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(1100, 720);
-            MinimumSize = new Size(900, 600);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
-
-            var invoicePanel = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 220,
-                Padding = new Padding(12)
-            };
-            invoicePanel.Controls.Add(new Label
-            {
-                Text = "فواتير البيع القابلة للإرجاع",
-                AutoSize = true,
-                Location = new Point(870, 12)
-            });
-            invoicesGrid = CreateGrid();
-            invoicesGrid.Location = new Point(20, 42);
-            invoicesGrid.Size = new Size(1050, 155);
-            invoicesGrid.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             invoicesGrid.SelectionChanged += (sender, args) => InvoiceSelectionChanged();
-            AddColumn(invoicesGrid, "InvoiceNo", "رقم الفاتورة", 75, true);
-            AddColumn(invoicesGrid, "SaleDate", "تاريخ البيع", 70, true, "g");
-            AddColumn(invoicesGrid, "CurrencyCode", "العملة", 35, true);
-            AddColumn(invoicesGrid, "Total", "الإجمالي", 55, true, "N4");
-            AddColumn(invoicesGrid, "ReturnedTotal", "المردود", 55, true, "N4");
-            var loadButton = CreateButton("تحميل الأصناف");
-            loadButton.Name = "loadInvoiceButton";
-            loadButton.Location = new Point(20, 12);
-            loadButton.Click += (sender, args) => LoadSelectedInvoiceLines();
-            invoicePanel.Controls.Add(loadButton);
-
-            var detailsPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(12) };
-            detailsPanel.Controls.Add(new Label
-            {
-                Text = "أدخل الكمية الصالحة والكمية التالفة كلٌّ على حدة. تُعاد الصالحة للمخزون فقط.",
-                AutoSize = true,
-                Location = new Point(420, 10)
-            });
-            linesGrid = CreateGrid();
-            linesGrid.Location = new Point(20, 42);
-            linesGrid.Size = new Size(1050, 350);
-            linesGrid.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            linesGrid.AllowUserToAddRows = false;
-            linesGrid.AllowUserToDeleteRows = false;
-            linesGrid.DataSource = lines;
             linesGrid.CellValueChanged += (sender, args) => UpdatePreview();
             linesGrid.DataError += (sender, args) =>
             {
@@ -86,110 +40,10 @@ namespace GroceryPOS
                         "كمية الإرجاع غير صالحة.");
                 }
             };
-            AddColumn(linesGrid, "ProductName", "المنتج", 110, true);
-            AddColumn(linesGrid, "UnitName", "الوحدة", 45, true);
-            AddColumn(linesGrid, "QuantitySold", "المباع", 45, true, "N3");
-            AddColumn(linesGrid, "QuantityReturned", "المردود", 50, true, "N3");
-            AddColumn(linesGrid, "RemainingQuantity", "المتبقي", 50, true, "N3");
-            AddColumn(linesGrid, "UnitPrice", "سعر البيع", 55, true, "N4");
-            AddColumn(linesGrid, "GoodQuantity", "كمية صالحة", 70, false, "N3");
-            AddColumn(linesGrid, "DamagedQuantity", "كمية تالفة", 70, false, "N3");
-            detailsPanel.Controls.Add(linesGrid);
-
-            var footer = new Panel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 105,
-                Padding = new Padding(12)
-            };
-            footer.Controls.Add(new Label
-            {
-                Text = "سبب الإرجاع (اختياري)",
-                AutoSize = true,
-                Location = new Point(870, 16)
-            });
-            reasonInput = new TextBox
-            {
-                Location = new Point(350, 12),
-                Width = 500,
-                MaxLength = 300,
-                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
-            };
-            footer.Controls.Add(reasonInput);
-            totalLabel = new Label
-            {
-                AutoSize = true,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                Location = new Point(690, 58),
-                Text = "قيمة الرد التقديرية: 0"
-            };
-            footer.Controls.Add(totalLabel);
-            var postButton = CreateButton("تأكيد المرتجع");
-            postButton.Width = 150;
-            postButton.Location = new Point(510, 52);
+            loadInvoiceButton.Click += (sender, args) => LoadSelectedInvoiceLines();
             postButton.Click += (sender, args) => PostReturn();
-            footer.Controls.Add(postButton);
-            var refreshButton = CreateButton("تحديث الفواتير");
-            refreshButton.Width = 130;
-            refreshButton.Location = new Point(365, 52);
             refreshButton.Click += (sender, args) => LoadInvoices();
-            footer.Controls.Add(refreshButton);
-            Controls.Add(detailsPanel);
-            Controls.Add(invoicePanel);
-            Controls.Add(footer);
-
             Shown += (sender, args) => LoadInvoices();
-        }
-
-        private static Button CreateButton(string text)
-        {
-            return new Button
-            {
-                Text = text,
-                Width = 120,
-                Height = 34,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right
-            };
-        }
-
-        private static DataGridView CreateGrid()
-        {
-            return new DataGridView
-            {
-                Dock = DockStyle.None,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White
-            };
-        }
-
-        private static void AddColumn(
-            DataGridView grid,
-            string property,
-            string title,
-            float weight,
-            bool readOnly,
-            string format = null)
-        {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight,
-                ReadOnly = readOnly
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
-            }
-
-            grid.Columns.Add(column);
         }
 
         private void LoadInvoices()
@@ -218,11 +72,7 @@ namespace GroceryPOS
 
         private void UpdateLoadButton()
         {
-            Button button = Controls.Find("loadInvoiceButton", true).FirstOrDefault() as Button;
-            if (button != null)
-            {
-                button.Enabled = SelectedInvoice() != null;
-            }
+            loadInvoiceButton.Enabled = SelectedInvoice() != null;
         }
 
         private void InvoiceSelectionChanged()
