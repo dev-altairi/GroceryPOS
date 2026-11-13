@@ -191,6 +191,30 @@
     </Compile>
     <Compile Include="Shifts.cs" />
     <Compile Include="ShiftsForms.cs" />
+    <Compile Include="ShiftManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShiftManagementForm.Designer.cs">
+      <DependentUpon>ShiftManagementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftOpeningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShiftOpeningForm.Designer.cs">
+      <DependentUpon>ShiftOpeningForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CashMovementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CashMovementForm.Designer.cs">
+      <DependentUpon>CashMovementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftClosingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShiftClosingForm.Designer.cs">
+      <DependentUpon>ShiftClosingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
