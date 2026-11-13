@@ -119,6 +119,36 @@ namespace GroceryPOS
                     passwordForm.ShowDialog(this);
                 }
             };
+            var openSuppliersButton = new Button
+            {
+                Text = "إدارة الموردين",
+                Width = 180,
+                Height = 48,
+                Location = new Point(50, 320),
+                Visible = user.HasPermission("Suppliers.View") || user.HasPermission("Suppliers.Manage")
+            };
+            openSuppliersButton.Click += (sender, args) =>
+            {
+                using (var suppliersForm = new SupplierManagementForm(user))
+                {
+                    suppliersForm.ShowDialog(this);
+                }
+            };
+            var openPurchasesButton = new Button
+            {
+                Text = "فواتير المشتريات",
+                Width = 180,
+                Height = 48,
+                Location = new Point(245, 320),
+                Visible = user.HasPermission("Purchases.Invoice")
+            };
+            openPurchasesButton.Click += (sender, args) =>
+            {
+                using (var purchasesForm = new PurchasesForm(user))
+                {
+                    purchasesForm.ShowDialog(this);
+                }
+            };
             var logoutButton = new Button
             {
                 Text = "تسجيل الخروج",
@@ -138,6 +168,8 @@ namespace GroceryPOS
             content.Controls.Add(openRolesButton);
             content.Controls.Add(changePasswordButton);
             content.Controls.Add(logoutButton);
+            content.Controls.Add(openSuppliersButton);
+            content.Controls.Add(openPurchasesButton);
             var layout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
