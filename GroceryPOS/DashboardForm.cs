@@ -164,6 +164,21 @@ namespace GroceryPOS
                     shiftsForm.ShowDialog(this);
                 }
             };
+            var openSalesButton = new Button
+            {
+                Text = "نقطة البيع",
+                Width = 180,
+                Height = 48,
+                Location = new Point(635, 320),
+                Visible = user.HasPermission("Sales.Create")
+            };
+            openSalesButton.Click += (sender, args) =>
+            {
+                using (var salesForm = new SalesForm(user))
+                {
+                    salesForm.ShowDialog(this);
+                }
+            };
             var logoutButton = new Button
             {
                 Text = "تسجيل الخروج",
@@ -186,6 +201,7 @@ namespace GroceryPOS
             content.Controls.Add(openSuppliersButton);
             content.Controls.Add(openPurchasesButton);
             content.Controls.Add(openShiftsButton);
+            content.Controls.Add(openSalesButton);
             var layout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,

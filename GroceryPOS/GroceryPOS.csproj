@@ -86,6 +86,10 @@
     <Compile Include="PasswordManagement.cs" />
     <Compile Include="Purchasing.cs" />
     <Compile Include="PurchasingForms.cs" />
+    <Compile Include="Sales.cs" />
+    <Compile Include="SalesForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Shifts.cs" />
     <Compile Include="ShiftsForms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
