@@ -115,6 +115,12 @@
     </Compile>
     <Compile Include="Purchasing.cs" />
     <Compile Include="PurchasingForms.cs" />
+    <Compile Include="PurchaseInvoiceEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PurchaseInvoiceEditorForm.Designer.cs">
+      <DependentUpon>PurchaseInvoiceEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PurchasesForm.cs">
       <SubType>Form</SubType>
     </Compile>

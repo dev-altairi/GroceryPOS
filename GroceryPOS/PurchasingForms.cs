@@ -348,193 +348,51 @@ namespace GroceryPOS
         }
     }
 
-    internal sealed class PurchaseInvoiceEditorForm : Form
+    public partial class PurchaseInvoiceEditorForm : Form
     {
-        private readonly AuthenticatedUser user;
-        private readonly ComboBox supplierComboBox;
-        private readonly ComboBox currencyComboBox;
-        private readonly DateTimePicker invoiceDatePicker;
-        private readonly TextBox supplierInvoiceNoTextBox;
-        private readonly TextBox notesTextBox;
-        private readonly DataGridView linesGrid;
+        private AuthenticatedUser user;
         private readonly BindingList<PurchaseInvoiceLineDraft> lines =
             new BindingList<PurchaseInvoiceLineDraft>();
-        private readonly List<ProductUnitOption> productUnits;
+        private List<ProductUnitOption> productUnits;
 
         internal string InvoiceNumber { get; private set; }
+
+        public PurchaseInvoiceEditorForm()
+        {
+            InitializeComponent();
+            productUnits = new List<ProductUnitOption>();
+        }
 
         internal PurchaseInvoiceEditorForm(
             AuthenticatedUser authenticatedUser,
             IList<SupplierOption> suppliers,
             IList<CurrencyOption> currencies,
             IList<ProductUnitOption> availableProductUnits)
+            : this()
         {
             user = authenticatedUser;
-            productUnits = new List<ProductUnitOption>
-            {
-                new ProductUnitOption(0, 0, "— اختر منتجًا —", string.Empty, 1m, false)
-            };
+            productUnits.Add(new ProductUnitOption(
+                0, 0, "— اختر منتجًا —", string.Empty, 1m, false));
             productUnits.AddRange(availableProductUnits);
+            productUnitColumn.DataSource = productUnits;
+            linesGrid.DataSource = lines;
 
-            Text = "استلام فاتورة شراء";
-            StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(1040, 680);
-            MinimumSize = new Size(1060, 750);
-            RightToLeft = RightToLeft.Yes;
-            RightToLeftLayout = true;
-            Font = new Font("Segoe UI", 10F);
+            supplierComboBox.DataSource = new List<SupplierOption>(suppliers);
+            if (suppliers.Count > 0)
+            {
+                supplierComboBox.SelectedIndex = 0;
+            }
 
-            supplierComboBox = AddCombo("المورد", 20, new List<SupplierOption>(suppliers));
-            currencyComboBox = AddCombo("العملة", 75, new List<CurrencyOption>(currencies));
+            currencyComboBox.DataSource = new List<CurrencyOption>(currencies);
+            if (currencies.Count > 0)
+            {
+                currencyComboBox.SelectedIndex = 0;
+            }
+
             CurrencyOption baseCurrency = currencies.FirstOrDefault(currency => currency.IsBase);
             currencyComboBox.SelectedItem = baseCurrency;
-
-            Controls.Add(new Label
-            {
-                Text = "تاريخ الفاتورة",
-                AutoSize = true,
-                Location = new Point(890, 130)
-            });
-            invoiceDatePicker = new DateTimePicker
-            {
-                Location = new Point(650, 125),
-                Width = 220,
-                Format = DateTimePickerFormat.Short,
-                MaxDate = DateTime.Today,
-                Value = DateTime.Today
-            };
-            Controls.Add(invoiceDatePicker);
-
-            Controls.Add(new Label
-            {
-                Text = "رقم فاتورة المورد",
-                AutoSize = true,
-                Location = new Point(570, 130)
-            });
-            supplierInvoiceNoTextBox = new TextBox
-            {
-                Location = new Point(350, 125),
-                Width = 195,
-                MaxLength = 50
-            };
-            Controls.Add(supplierInvoiceNoTextBox);
-            Controls.Add(new Label
-            {
-                Text = "ملاحظات",
-                AutoSize = true,
-                Location = new Point(280, 130)
-            });
-            notesTextBox = new TextBox
-            {
-                Location = new Point(35, 125),
-                Width = 225,
-                MaxLength = 500
-            };
-            Controls.Add(notesTextBox);
-
-            linesGrid = new DataGridView
-            {
-                Location = new Point(25, 175),
-                Size = new Size(990, 420),
-                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                AllowUserToAddRows = true,
-                AllowUserToDeleteRows = true,
-                AutoGenerateColumns = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                MultiSelect = false,
-                SelectionMode = DataGridViewSelectionMode.CellSelect,
-                RowHeadersVisible = false,
-                RightToLeft = RightToLeft.Yes,
-                BackgroundColor = Color.White,
-                DataSource = lines
-            };
-            linesGrid.Columns.Add(new DataGridViewComboBoxColumn
-            {
-                DataPropertyName = "ProductUnitId",
-                HeaderText = "المنتج والوحدة",
-                FillWeight = 185,
-                DataSource = productUnits,
-                DisplayMember = "DisplayName",
-                ValueMember = "Id",
-                FlatStyle = FlatStyle.Flat
-            });
-            AddGridColumn("Quantity", "الكمية", 65, "N3");
-            AddGridColumn("UnitPrice", "سعر الوحدة", 75, "N4");
-            AddGridColumn("BatchNo", "رقم الدفعة", 80);
-            AddGridColumn("ExpiryDate", "الصلاحية (YYYY-MM-DD)", 90, "yyyy-MM-dd");
             linesGrid.DataError += LinesGrid_DataError;
-            Controls.Add(linesGrid);
-
-            Controls.Add(new Label
-            {
-                Text = "أدخل سعر الوحدة بعملة الفاتورة. الصلاحية إلزامية للمنتجات التي تتطلب التتبع.",
-                AutoSize = true,
-                ForeColor = Color.DimGray,
-                Location = new Point(470, 610)
-            });
-            var save = new Button
-            {
-                Text = "استلام وحفظ",
-                Location = new Point(270, 635),
-                Width = 130,
-                Height = 34,
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right
-            };
-            save.Click += SaveButton_Click;
-            Controls.Add(save);
-            var cancel = new Button
-            {
-                Text = "إلغاء",
-                Location = new Point(160, 635),
-                Width = 90,
-                Height = 34,
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                DialogResult = DialogResult.Cancel
-            };
-            cancel.Click += (sender, args) => Close();
-            Controls.Add(cancel);
-            AcceptButton = save;
-            CancelButton = cancel;
-        }
-
-        private ComboBox AddCombo<T>(string label, int top, IList<T> choices)
-        {
-            Controls.Add(new Label
-            {
-                Text = label,
-                AutoSize = true,
-                Location = new Point(895, top + 4)
-            });
-            var combo = new ComboBox
-            {
-                Location = new Point(610, top),
-                Width = 260,
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                DataSource = choices
-            };
-            if (choices.Count > 0)
-            {
-                combo.SelectedIndex = 0;
-            }
-
-            Controls.Add(combo);
-            return combo;
-        }
-
-        private void AddGridColumn(string property, string title, float weight, string format = null)
-        {
-            var column = new DataGridViewTextBoxColumn
-            {
-                DataPropertyName = property,
-                HeaderText = title,
-                FillWeight = weight
-            };
-            if (format != null)
-            {
-                column.DefaultCellStyle.Format = format;
-            }
-
-            linesGrid.Columns.Add(column);
+            saveButton.Click += SaveButton_Click;
         }
 
         private void LinesGrid_DataError(object sender, DataGridViewDataErrorEventArgs e)
