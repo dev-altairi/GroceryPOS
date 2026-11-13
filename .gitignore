@@ -1,0 +1,19 @@
+# Visual Studio and build output
+.vs/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.cache
+
+# Local logs and database files
+*.log
+*.bak
+*.mdf
+*.ldf
+
+# Local secrets and publishing profiles
+.env
+.env.*
+!.env.example
+*.publishsettings
