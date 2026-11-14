@@ -11,6 +11,13 @@ namespace GroceryPOS
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.DataGridView grid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fullNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn usernameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn roleNamesColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isActiveColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn mustChangePasswordColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lockedUntilColumn;
         private System.Windows.Forms.Label status;
 
         protected override void Dispose(bool disposing)
@@ -34,6 +41,13 @@ namespace GroceryPOS
             this.refreshButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.grid = new System.Windows.Forms.DataGridView();
+            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fullNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.usernameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.roleNamesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isActiveColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.mustChangePasswordColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.lockedUntilColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.Label();
             this.toolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
@@ -103,9 +117,47 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = true;
+            this.grid.AutoGenerateColumns = false;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
+            this.idColumn.DataPropertyName = "Id";
+            this.idColumn.Name = "Id";
+            this.idColumn.Visible = false;
+            this.fullNameColumn.DataPropertyName = "FullName";
+            this.fullNameColumn.FillWeight = 120F;
+            this.fullNameColumn.HeaderText = "الاسم";
+            this.fullNameColumn.Name = "FullName";
+            this.usernameColumn.DataPropertyName = "Username";
+            this.usernameColumn.FillWeight = 90F;
+            this.usernameColumn.HeaderText = "اسم المستخدم";
+            this.usernameColumn.Name = "Username";
+            this.roleNamesColumn.DataPropertyName = "RoleNames";
+            this.roleNamesColumn.FillWeight = 150F;
+            this.roleNamesColumn.HeaderText = "الأدوار";
+            this.roleNamesColumn.Name = "RoleNames";
+            this.isActiveColumn.DataPropertyName = "IsActive";
+            this.isActiveColumn.FillWeight = 55F;
+            this.isActiveColumn.HeaderText = "نشط";
+            this.isActiveColumn.Name = "IsActive";
+            this.mustChangePasswordColumn.DataPropertyName = "MustChangePassword";
+            this.mustChangePasswordColumn.FillWeight = 95F;
+            this.mustChangePasswordColumn.HeaderText = "يلزم تغيير كلمة المرور";
+            this.mustChangePasswordColumn.Name = "MustChangePassword";
+            this.lockedUntilColumn.DataPropertyName = "LockedUntil";
+            this.lockedUntilColumn.DefaultCellStyle.Format = "g";
+            this.lockedUntilColumn.FillWeight = 90F;
+            this.lockedUntilColumn.HeaderText = "القفل حتى";
+            this.lockedUntilColumn.Name = "LockedUntil";
+            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.idColumn,
+                this.fullNameColumn,
+                this.usernameColumn,
+                this.roleNamesColumn,
+                this.isActiveColumn,
+                this.mustChangePasswordColumn,
+                this.lockedUntilColumn
+            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";
