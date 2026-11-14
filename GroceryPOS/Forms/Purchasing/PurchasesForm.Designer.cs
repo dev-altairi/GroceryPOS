@@ -8,6 +8,16 @@ namespace GroceryPOS
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.DataGridView grid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn invoiceNoColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn supplierInvoiceNoColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn supplierNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn invoiceDateColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn currencyCodeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalBaseColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lineCountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn statusColumn;
         private System.Windows.Forms.Label status;
 
         protected override void Dispose(bool disposing)
@@ -28,6 +38,16 @@ namespace GroceryPOS
             this.refreshButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.grid = new System.Windows.Forms.DataGridView();
+            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.invoiceNoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.supplierInvoiceNoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.supplierNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.invoiceDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.currencyCodeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalBaseColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lineCountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.statusColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.Label();
             this.toolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
@@ -70,9 +90,64 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = true;
+            this.grid.AutoGenerateColumns = false;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
+            this.idColumn.DataPropertyName = "Id";
+            this.idColumn.Name = "Id";
+            this.idColumn.Visible = false;
+            this.invoiceNoColumn.DataPropertyName = "InvoiceNo";
+            this.invoiceNoColumn.FillWeight = 80F;
+            this.invoiceNoColumn.HeaderText = "رقم الفاتورة";
+            this.invoiceNoColumn.Name = "InvoiceNo";
+            this.supplierInvoiceNoColumn.DataPropertyName = "SupplierInvoiceNo";
+            this.supplierInvoiceNoColumn.FillWeight = 90F;
+            this.supplierInvoiceNoColumn.HeaderText = "رقم فاتورة المورد";
+            this.supplierInvoiceNoColumn.Name = "SupplierInvoiceNo";
+            this.supplierNameColumn.DataPropertyName = "SupplierName";
+            this.supplierNameColumn.FillWeight = 120F;
+            this.supplierNameColumn.HeaderText = "المورد";
+            this.supplierNameColumn.Name = "SupplierName";
+            this.invoiceDateColumn.DataPropertyName = "InvoiceDate";
+            this.invoiceDateColumn.DefaultCellStyle.Format = "d";
+            this.invoiceDateColumn.FillWeight = 75F;
+            this.invoiceDateColumn.HeaderText = "التاريخ";
+            this.invoiceDateColumn.Name = "InvoiceDate";
+            this.currencyCodeColumn.DataPropertyName = "CurrencyCode";
+            this.currencyCodeColumn.FillWeight = 45F;
+            this.currencyCodeColumn.HeaderText = "العملة";
+            this.currencyCodeColumn.Name = "CurrencyCode";
+            this.totalColumn.DataPropertyName = "Total";
+            this.totalColumn.DefaultCellStyle.Format = "N4";
+            this.totalColumn.FillWeight = 75F;
+            this.totalColumn.HeaderText = "الإجمالي";
+            this.totalColumn.Name = "Total";
+            this.totalBaseColumn.DataPropertyName = "TotalBase";
+            this.totalBaseColumn.DefaultCellStyle.Format = "N4";
+            this.totalBaseColumn.FillWeight = 95F;
+            this.totalBaseColumn.HeaderText = "الإجمالي بالعملة الأساسية";
+            this.totalBaseColumn.Name = "TotalBase";
+            this.lineCountColumn.DataPropertyName = "LineCount";
+            this.lineCountColumn.FillWeight = 50F;
+            this.lineCountColumn.HeaderText = "الأصناف";
+            this.lineCountColumn.Name = "LineCount";
+            this.statusColumn.DataPropertyName = "Status";
+            this.statusColumn.FillWeight = 55F;
+            this.statusColumn.HeaderText = "الحالة";
+            this.statusColumn.Name = "Status";
+            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.idColumn,
+                this.invoiceNoColumn,
+                this.supplierInvoiceNoColumn,
+                this.supplierNameColumn,
+                this.invoiceDateColumn,
+                this.currencyCodeColumn,
+                this.totalColumn,
+                this.totalBaseColumn,
+                this.lineCountColumn,
+                this.statusColumn
+            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";
