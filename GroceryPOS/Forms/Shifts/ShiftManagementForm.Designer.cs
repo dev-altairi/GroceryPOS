@@ -92,46 +92,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Id",
-                    DataPropertyName = "Id",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CashierId",
-                    DataPropertyName = "CashierId",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CashierName",
-                    DataPropertyName = "CashierName",
-                    HeaderText = "الكاشير",
-                    FillWeight = 100F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "DeviceName",
-                    DataPropertyName = "DeviceName",
-                    HeaderText = "الجهاز",
-                    FillWeight = 80F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "OpenedAt",
-                    DataPropertyName = "OpenedAt",
-                    HeaderText = "وقت الفتح",
-                    FillWeight = 90F,
-                    DefaultCellStyle = { Format = "g" }
-                }
-            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";

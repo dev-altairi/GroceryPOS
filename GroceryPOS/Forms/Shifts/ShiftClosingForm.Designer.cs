@@ -34,52 +34,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyCode",
-                    DataPropertyName = "CurrencyCode",
-                    HeaderText = "العملة",
-                    FillWeight = 45F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyName",
-                    DataPropertyName = "CurrencyName",
-                    HeaderText = "الوصف",
-                    FillWeight = 100F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ExpectedAmount",
-                    DataPropertyName = "ExpectedAmount",
-                    HeaderText = "المتوقع",
-                    FillWeight = 75F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ActualAmount",
-                    DataPropertyName = "ActualAmount",
-                    HeaderText = "الفعلي",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "DifferenceReason",
-                    DataPropertyName = "DifferenceReason",
-                    HeaderText = "سبب الفرق",
-                    FillWeight = 125F
-                }
-            });
             this.grid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                System.Windows.Forms.AnchorStyles.Bottom |
                                System.Windows.Forms.AnchorStyles.Left |

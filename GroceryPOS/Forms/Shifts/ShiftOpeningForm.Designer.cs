@@ -30,36 +30,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyCode",
-                    DataPropertyName = "CurrencyCode",
-                    HeaderText = "العملة",
-                    FillWeight = 55F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyName",
-                    DataPropertyName = "CurrencyName",
-                    HeaderText = "الوصف",
-                    FillWeight = 120F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Amount",
-                    DataPropertyName = "Amount",
-                    HeaderText = "رصيد البداية",
-                    FillWeight = 80F,
-                    DefaultCellStyle = { Format = "N4" }
-                }
-            });
             this.grid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                System.Windows.Forms.AnchorStyles.Bottom |
                                System.Windows.Forms.AnchorStyles.Left |

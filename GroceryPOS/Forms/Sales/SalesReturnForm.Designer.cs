@@ -78,50 +78,9 @@ namespace GroceryPOS
             //
             this.invoicesGrid.AllowUserToAddRows = false;
             this.invoicesGrid.AllowUserToDeleteRows = false;
-            this.invoicesGrid.AutoGenerateColumns = false;
+            this.invoicesGrid.AutoGenerateColumns = true;
             this.invoicesGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.invoicesGrid.BackgroundColor = System.Drawing.Color.White;
-            this.invoicesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "InvoiceNo",
-                    DataPropertyName = "InvoiceNo",
-                    HeaderText = "رقم الفاتورة",
-                    FillWeight = 75F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "SaleDate",
-                    DataPropertyName = "SaleDate",
-                    HeaderText = "تاريخ البيع",
-                    FillWeight = 70F,
-                    DefaultCellStyle = { Format = "g" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyCode",
-                    DataPropertyName = "CurrencyCode",
-                    HeaderText = "العملة",
-                    FillWeight = 35F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Total",
-                    DataPropertyName = "Total",
-                    HeaderText = "الإجمالي",
-                    FillWeight = 55F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ReturnedTotal",
-                    DataPropertyName = "ReturnedTotal",
-                    HeaderText = "المردود",
-                    FillWeight = 55F,
-                    DefaultCellStyle = { Format = "N4" }
-                }
-            });
             this.invoicesGrid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                        System.Windows.Forms.AnchorStyles.Left |
                                        System.Windows.Forms.AnchorStyles.Right;
@@ -152,80 +111,9 @@ namespace GroceryPOS
             //
             this.linesGrid.AllowUserToAddRows = false;
             this.linesGrid.AllowUserToDeleteRows = false;
-            this.linesGrid.AutoGenerateColumns = false;
+            this.linesGrid.AutoGenerateColumns = true;
             this.linesGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.linesGrid.BackgroundColor = System.Drawing.Color.White;
-            this.linesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ProductName",
-                    DataPropertyName = "ProductName",
-                    HeaderText = "المنتج",
-                    FillWeight = 110F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "UnitName",
-                    DataPropertyName = "UnitName",
-                    HeaderText = "الوحدة",
-                    FillWeight = 45F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "QuantitySold",
-                    DataPropertyName = "QuantitySold",
-                    HeaderText = "المباع",
-                    FillWeight = 45F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "QuantityReturned",
-                    DataPropertyName = "QuantityReturned",
-                    HeaderText = "المردود",
-                    FillWeight = 50F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "RemainingQuantity",
-                    DataPropertyName = "RemainingQuantity",
-                    HeaderText = "المتبقي",
-                    FillWeight = 50F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "UnitPrice",
-                    DataPropertyName = "UnitPrice",
-                    HeaderText = "سعر البيع",
-                    FillWeight = 55F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "GoodQuantity",
-                    DataPropertyName = "GoodQuantity",
-                    HeaderText = "كمية صالحة",
-                    FillWeight = 70F,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "DamagedQuantity",
-                    DataPropertyName = "DamagedQuantity",
-                    HeaderText = "كمية تالفة",
-                    FillWeight = 70F,
-                    DefaultCellStyle = { Format = "N3" }
-                }
-            });
             this.linesGrid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                    System.Windows.Forms.AnchorStyles.Bottom |
                                    System.Windows.Forms.AnchorStyles.Left |
