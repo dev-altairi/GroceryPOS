@@ -10,6 +10,11 @@ namespace GroceryPOS
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Button closeWindowButton;
         private System.Windows.Forms.DataGridView grid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cashierIdColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cashierNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn deviceNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn openedAtColumn;
         private System.Windows.Forms.Label status;
 
         protected override void Dispose(bool disposing)
@@ -32,6 +37,11 @@ namespace GroceryPOS
             this.refreshButton = new System.Windows.Forms.Button();
             this.closeWindowButton = new System.Windows.Forms.Button();
             this.grid = new System.Windows.Forms.DataGridView();
+            this.idColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cashierIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cashierNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.deviceNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.openedAtColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.Label();
             this.toolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
@@ -92,9 +102,36 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = true;
+            this.grid.AutoGenerateColumns = false;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
+            this.idColumn.DataPropertyName = "Id";
+            this.idColumn.Name = "Id";
+            this.idColumn.Visible = false;
+            this.cashierIdColumn.DataPropertyName = "CashierId";
+            this.cashierIdColumn.Name = "CashierId";
+            this.cashierIdColumn.Visible = false;
+            this.cashierNameColumn.DataPropertyName = "CashierName";
+            this.cashierNameColumn.FillWeight = 100F;
+            this.cashierNameColumn.HeaderText = "الكاشير";
+            this.cashierNameColumn.Name = "CashierName";
+            this.deviceNameColumn.DataPropertyName = "DeviceName";
+            this.deviceNameColumn.FillWeight = 80F;
+            this.deviceNameColumn.HeaderText = "الجهاز";
+            this.deviceNameColumn.Name = "DeviceName";
+            this.openedAtColumn.DataPropertyName = "OpenedAt";
+            this.openedAtColumn.DefaultCellStyle.Format = "g";
+            this.openedAtColumn.FillWeight = 90F;
+            this.openedAtColumn.HeaderText = "وقت الفتح";
+            this.openedAtColumn.Name = "OpenedAt";
+            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.idColumn,
+                this.cashierIdColumn,
+                this.cashierNameColumn,
+                this.deviceNameColumn,
+                this.openedAtColumn
+            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";

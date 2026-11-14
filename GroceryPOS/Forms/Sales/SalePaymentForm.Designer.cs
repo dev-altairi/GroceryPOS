@@ -6,6 +6,10 @@ namespace GroceryPOS
         private System.Windows.Forms.Label requiredLabel;
         private System.Windows.Forms.Label helpLabel;
         private System.Windows.Forms.DataGridView grid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn currencyCodeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn currencyNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rateToBaseColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn amountPaidColumn;
         private System.Windows.Forms.Label changeCurrencyLabel;
         private System.Windows.Forms.ComboBox changeCurrencyComboBox;
         private System.Windows.Forms.Label paidLabel;
@@ -28,6 +32,10 @@ namespace GroceryPOS
             this.requiredLabel = new System.Windows.Forms.Label();
             this.helpLabel = new System.Windows.Forms.Label();
             this.grid = new System.Windows.Forms.DataGridView();
+            this.currencyCodeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.currencyNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rateToBaseColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.amountPaidColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.changeCurrencyLabel = new System.Windows.Forms.Label();
             this.changeCurrencyComboBox = new System.Windows.Forms.ComboBox();
             this.paidLabel = new System.Windows.Forms.Label();
@@ -53,9 +61,37 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = true;
+            this.grid.AutoGenerateColumns = false;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
+            this.currencyCodeColumn.DataPropertyName = "CurrencyCode";
+            this.currencyCodeColumn.FillWeight = 45F;
+            this.currencyCodeColumn.HeaderText = "العملة";
+            this.currencyCodeColumn.Name = "CurrencyCode";
+            this.currencyCodeColumn.ReadOnly = true;
+            this.currencyNameColumn.DataPropertyName = "CurrencyName";
+            this.currencyNameColumn.FillWeight = 80F;
+            this.currencyNameColumn.HeaderText = "الوصف";
+            this.currencyNameColumn.Name = "CurrencyName";
+            this.currencyNameColumn.ReadOnly = true;
+            this.rateToBaseColumn.DataPropertyName = "RateToBase";
+            this.rateToBaseColumn.DefaultCellStyle.Format = "N6";
+            this.rateToBaseColumn.FillWeight = 75F;
+            this.rateToBaseColumn.HeaderText = "سعر الصرف";
+            this.rateToBaseColumn.Name = "RateToBase";
+            this.rateToBaseColumn.ReadOnly = true;
+            this.amountPaidColumn.DataPropertyName = "AmountPaid";
+            this.amountPaidColumn.DefaultCellStyle.Format = "N4";
+            this.amountPaidColumn.FillWeight = 100F;
+            this.amountPaidColumn.HeaderText = "المبلغ المدفوع";
+            this.amountPaidColumn.Name = "AmountPaid";
+            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.currencyCodeColumn,
+                this.currencyNameColumn,
+                this.rateToBaseColumn,
+                this.amountPaidColumn
+            });
             this.grid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                System.Windows.Forms.AnchorStyles.Bottom |
                                System.Windows.Forms.AnchorStyles.Left |

@@ -12,9 +12,18 @@ namespace GroceryPOS
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.DataGridView resultsGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn displayNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn barcodeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn retailPriceColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn availableQuantityColumn;
         private System.Windows.Forms.Panel cartPanel;
         private System.Windows.Forms.DataGridView cartGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn productNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn unitNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quantityColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn unitPriceColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn discountColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn lineTotalColumn;
         private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Label totalLabel;
         private System.Windows.Forms.Button removeButton;
@@ -43,9 +52,18 @@ namespace GroceryPOS
             this.addButton = new System.Windows.Forms.Button();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.resultsGrid = new System.Windows.Forms.DataGridView();
+            this.displayNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.barcodeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.retailPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.availableQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cartPanel = new System.Windows.Forms.Panel();
             this.cartGrid = new System.Windows.Forms.DataGridView();
+            this.productNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discountColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lineTotalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.footer = new System.Windows.Forms.Panel();
             this.totalLabel = new System.Windows.Forms.Label();
             this.removeButton = new System.Windows.Forms.Button();
@@ -140,9 +158,34 @@ namespace GroceryPOS
             //
             this.resultsGrid.AllowUserToAddRows = false;
             this.resultsGrid.AllowUserToDeleteRows = false;
-            this.resultsGrid.AutoGenerateColumns = true;
+            this.resultsGrid.AutoGenerateColumns = false;
             this.resultsGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.resultsGrid.BackgroundColor = System.Drawing.Color.White;
+            this.displayNameColumn.DataPropertyName = "DisplayName";
+            this.displayNameColumn.FillWeight = 150F;
+            this.displayNameColumn.HeaderText = "المنتج والوحدة";
+            this.displayNameColumn.Name = "DisplayName";
+            this.barcodeColumn.DataPropertyName = "Barcode";
+            this.barcodeColumn.FillWeight = 70F;
+            this.barcodeColumn.HeaderText = "الباركود";
+            this.barcodeColumn.Name = "Barcode";
+            this.retailPriceColumn.DataPropertyName = "RetailPrice";
+            this.retailPriceColumn.DefaultCellStyle.Format = "N4";
+            this.retailPriceColumn.FillWeight = 65F;
+            this.retailPriceColumn.HeaderText = "سعر البيع";
+            this.retailPriceColumn.Name = "RetailPrice";
+            this.availableQuantityColumn.DataPropertyName = "AvailableQuantity";
+            this.availableQuantityColumn.DefaultCellStyle.Format = "N3";
+            this.availableQuantityColumn.FillWeight = 75F;
+            this.availableQuantityColumn.HeaderText = "المخزون الإجمالي";
+            this.availableQuantityColumn.Name = "AvailableQuantity";
+            this.resultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.displayNameColumn,
+                this.barcodeColumn,
+                this.retailPriceColumn,
+                this.availableQuantityColumn
+            });
             this.resultsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultsGrid.MultiSelect = false;
             this.resultsGrid.Name = "resultsGrid";
@@ -161,9 +204,36 @@ namespace GroceryPOS
             //
             this.cartGrid.AllowUserToAddRows = false;
             this.cartGrid.AllowUserToDeleteRows = false;
-            this.cartGrid.AutoGenerateColumns = true;
+            this.cartGrid.AutoGenerateColumns = false;
             this.cartGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cartGrid.BackgroundColor = System.Drawing.Color.White;
+            this.productNameColumn.DataPropertyName = "ProductName";
+            this.productNameColumn.FillWeight = 110F;
+            this.productNameColumn.HeaderText = "المنتج";
+            this.productNameColumn.Name = "ProductName";
+            this.productNameColumn.ReadOnly = true;
+            this.unitNameColumn.DataPropertyName = "UnitName";
+            this.unitNameColumn.FillWeight = 55F;
+            this.unitNameColumn.HeaderText = "الوحدة";
+            this.unitNameColumn.Name = "UnitName";
+            this.unitNameColumn.ReadOnly = true;
+            this.quantityColumn.DataPropertyName = "Quantity";
+            this.quantityColumn.DefaultCellStyle.Format = "N3";
+            this.quantityColumn.FillWeight = 55F;
+            this.quantityColumn.HeaderText = "الكمية";
+            this.quantityColumn.Name = "Quantity";
+            this.unitPriceColumn.DataPropertyName = "UnitPrice";
+            this.unitPriceColumn.DefaultCellStyle.Format = "N4";
+            this.unitPriceColumn.FillWeight = 65F;
+            this.unitPriceColumn.HeaderText = "سعر الوحدة";
+            this.unitPriceColumn.Name = "UnitPrice";
+            this.unitPriceColumn.ReadOnly = true;
+            this.lineTotalColumn.DataPropertyName = "LineTotal";
+            this.lineTotalColumn.DefaultCellStyle.Format = "N4";
+            this.lineTotalColumn.FillWeight = 70F;
+            this.lineTotalColumn.HeaderText = "الإجمالي";
+            this.lineTotalColumn.Name = "LineTotal";
+            this.lineTotalColumn.ReadOnly = true;
             this.cartGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cartGrid.MultiSelect = false;
             this.cartGrid.Name = "cartGrid";
@@ -178,6 +248,15 @@ namespace GroceryPOS
             this.discountColumn.FillWeight = 55F;
             this.discountColumn.HeaderText = "خصم";
             this.discountColumn.Name = "Discount";
+            this.cartGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.productNameColumn,
+                this.unitNameColumn,
+                this.quantityColumn,
+                this.unitPriceColumn,
+                this.discountColumn,
+                this.lineTotalColumn
+            });
             //
             // footer
             //

@@ -7,9 +7,22 @@ namespace GroceryPOS
         private System.Windows.Forms.Label invoicesLabel;
         private System.Windows.Forms.Button loadInvoiceButton;
         private System.Windows.Forms.DataGridView invoicesGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn invoiceNoColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn saleDateColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn currencyCodeColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn returnedTotalColumn;
         private System.Windows.Forms.Panel detailsPanel;
         private System.Windows.Forms.Label detailsLabel;
         private System.Windows.Forms.DataGridView linesGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn productNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn unitNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quantitySoldColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quantityReturnedColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn remainingQuantityColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn unitPriceColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn goodQuantityColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn damagedQuantityColumn;
         private System.Windows.Forms.Panel footer;
         private System.Windows.Forms.Label reasonLabel;
         private System.Windows.Forms.TextBox reasonInput;
@@ -34,9 +47,22 @@ namespace GroceryPOS
             this.invoicesLabel = new System.Windows.Forms.Label();
             this.loadInvoiceButton = new System.Windows.Forms.Button();
             this.invoicesGrid = new System.Windows.Forms.DataGridView();
+            this.invoiceNoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.saleDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.currencyCodeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.returnedTotalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.detailsPanel = new System.Windows.Forms.Panel();
             this.detailsLabel = new System.Windows.Forms.Label();
             this.linesGrid = new System.Windows.Forms.DataGridView();
+            this.productNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantitySoldColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantityReturnedColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.remainingQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.goodQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.damagedQuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.footer = new System.Windows.Forms.Panel();
             this.reasonLabel = new System.Windows.Forms.Label();
             this.reasonInput = new System.Windows.Forms.TextBox();
@@ -78,9 +104,40 @@ namespace GroceryPOS
             //
             this.invoicesGrid.AllowUserToAddRows = false;
             this.invoicesGrid.AllowUserToDeleteRows = false;
-            this.invoicesGrid.AutoGenerateColumns = true;
+            this.invoicesGrid.AutoGenerateColumns = false;
             this.invoicesGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.invoicesGrid.BackgroundColor = System.Drawing.Color.White;
+            this.invoiceNoColumn.DataPropertyName = "InvoiceNo";
+            this.invoiceNoColumn.FillWeight = 75F;
+            this.invoiceNoColumn.HeaderText = "رقم الفاتورة";
+            this.invoiceNoColumn.Name = "InvoiceNo";
+            this.saleDateColumn.DataPropertyName = "SaleDate";
+            this.saleDateColumn.DefaultCellStyle.Format = "g";
+            this.saleDateColumn.FillWeight = 70F;
+            this.saleDateColumn.HeaderText = "تاريخ البيع";
+            this.saleDateColumn.Name = "SaleDate";
+            this.currencyCodeColumn.DataPropertyName = "CurrencyCode";
+            this.currencyCodeColumn.FillWeight = 35F;
+            this.currencyCodeColumn.HeaderText = "العملة";
+            this.currencyCodeColumn.Name = "CurrencyCode";
+            this.totalColumn.DataPropertyName = "Total";
+            this.totalColumn.DefaultCellStyle.Format = "N4";
+            this.totalColumn.FillWeight = 55F;
+            this.totalColumn.HeaderText = "الإجمالي";
+            this.totalColumn.Name = "Total";
+            this.returnedTotalColumn.DataPropertyName = "ReturnedTotal";
+            this.returnedTotalColumn.DefaultCellStyle.Format = "N4";
+            this.returnedTotalColumn.FillWeight = 55F;
+            this.returnedTotalColumn.HeaderText = "المردود";
+            this.returnedTotalColumn.Name = "ReturnedTotal";
+            this.invoicesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.invoiceNoColumn,
+                this.saleDateColumn,
+                this.currencyCodeColumn,
+                this.totalColumn,
+                this.returnedTotalColumn
+            });
             this.invoicesGrid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                        System.Windows.Forms.AnchorStyles.Left |
                                        System.Windows.Forms.AnchorStyles.Right;
@@ -111,9 +168,64 @@ namespace GroceryPOS
             //
             this.linesGrid.AllowUserToAddRows = false;
             this.linesGrid.AllowUserToDeleteRows = false;
-            this.linesGrid.AutoGenerateColumns = true;
+            this.linesGrid.AutoGenerateColumns = false;
             this.linesGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.linesGrid.BackgroundColor = System.Drawing.Color.White;
+            this.productNameColumn.DataPropertyName = "ProductName";
+            this.productNameColumn.FillWeight = 110F;
+            this.productNameColumn.HeaderText = "المنتج";
+            this.productNameColumn.Name = "ProductName";
+            this.productNameColumn.ReadOnly = true;
+            this.unitNameColumn.DataPropertyName = "UnitName";
+            this.unitNameColumn.FillWeight = 45F;
+            this.unitNameColumn.HeaderText = "الوحدة";
+            this.unitNameColumn.Name = "UnitName";
+            this.unitNameColumn.ReadOnly = true;
+            this.quantitySoldColumn.DataPropertyName = "QuantitySold";
+            this.quantitySoldColumn.DefaultCellStyle.Format = "N3";
+            this.quantitySoldColumn.FillWeight = 45F;
+            this.quantitySoldColumn.HeaderText = "المباع";
+            this.quantitySoldColumn.Name = "QuantitySold";
+            this.quantitySoldColumn.ReadOnly = true;
+            this.quantityReturnedColumn.DataPropertyName = "QuantityReturned";
+            this.quantityReturnedColumn.DefaultCellStyle.Format = "N3";
+            this.quantityReturnedColumn.FillWeight = 50F;
+            this.quantityReturnedColumn.HeaderText = "المردود";
+            this.quantityReturnedColumn.Name = "QuantityReturned";
+            this.quantityReturnedColumn.ReadOnly = true;
+            this.remainingQuantityColumn.DataPropertyName = "RemainingQuantity";
+            this.remainingQuantityColumn.DefaultCellStyle.Format = "N3";
+            this.remainingQuantityColumn.FillWeight = 50F;
+            this.remainingQuantityColumn.HeaderText = "المتبقي";
+            this.remainingQuantityColumn.Name = "RemainingQuantity";
+            this.remainingQuantityColumn.ReadOnly = true;
+            this.unitPriceColumn.DataPropertyName = "UnitPrice";
+            this.unitPriceColumn.DefaultCellStyle.Format = "N4";
+            this.unitPriceColumn.FillWeight = 55F;
+            this.unitPriceColumn.HeaderText = "سعر البيع";
+            this.unitPriceColumn.Name = "UnitPrice";
+            this.unitPriceColumn.ReadOnly = true;
+            this.goodQuantityColumn.DataPropertyName = "GoodQuantity";
+            this.goodQuantityColumn.DefaultCellStyle.Format = "N3";
+            this.goodQuantityColumn.FillWeight = 70F;
+            this.goodQuantityColumn.HeaderText = "كمية صالحة";
+            this.goodQuantityColumn.Name = "GoodQuantity";
+            this.damagedQuantityColumn.DataPropertyName = "DamagedQuantity";
+            this.damagedQuantityColumn.DefaultCellStyle.Format = "N3";
+            this.damagedQuantityColumn.FillWeight = 70F;
+            this.damagedQuantityColumn.HeaderText = "كمية تالفة";
+            this.damagedQuantityColumn.Name = "DamagedQuantity";
+            this.linesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
+            {
+                this.productNameColumn,
+                this.unitNameColumn,
+                this.quantitySoldColumn,
+                this.quantityReturnedColumn,
+                this.remainingQuantityColumn,
+                this.unitPriceColumn,
+                this.goodQuantityColumn,
+                this.damagedQuantityColumn
+            });
             this.linesGrid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                    System.Windows.Forms.AnchorStyles.Bottom |
                                    System.Windows.Forms.AnchorStyles.Left |
