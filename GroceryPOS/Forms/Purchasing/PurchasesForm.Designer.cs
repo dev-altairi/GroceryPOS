@@ -70,84 +70,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Id",
-                    DataPropertyName = "Id",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "InvoiceNo",
-                    DataPropertyName = "InvoiceNo",
-                    HeaderText = "رقم الفاتورة",
-                    FillWeight = 80F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "SupplierInvoiceNo",
-                    DataPropertyName = "SupplierInvoiceNo",
-                    HeaderText = "رقم فاتورة المورد",
-                    FillWeight = 90F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "SupplierName",
-                    DataPropertyName = "SupplierName",
-                    HeaderText = "المورد",
-                    FillWeight = 120F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "InvoiceDate",
-                    DataPropertyName = "InvoiceDate",
-                    HeaderText = "التاريخ",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "d" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyCode",
-                    DataPropertyName = "CurrencyCode",
-                    HeaderText = "العملة",
-                    FillWeight = 45F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Total",
-                    DataPropertyName = "Total",
-                    HeaderText = "الإجمالي",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "TotalBase",
-                    DataPropertyName = "TotalBase",
-                    HeaderText = "الإجمالي بالعملة الأساسية",
-                    FillWeight = 95F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "LineCount",
-                    DataPropertyName = "LineCount",
-                    HeaderText = "الأصناف",
-                    FillWeight = 50F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Status",
-                    DataPropertyName = "Status",
-                    HeaderText = "الحالة",
-                    FillWeight = 55F
-                }
-            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";

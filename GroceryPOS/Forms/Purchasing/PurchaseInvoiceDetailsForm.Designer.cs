@@ -37,73 +37,9 @@ namespace GroceryPOS
             //
             this.linesGrid.AllowUserToAddRows = false;
             this.linesGrid.AllowUserToDeleteRows = false;
-            this.linesGrid.AutoGenerateColumns = false;
+            this.linesGrid.AutoGenerateColumns = true;
             this.linesGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.linesGrid.BackgroundColor = System.Drawing.Color.White;
-            this.linesGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ProductName",
-                    DataPropertyName = "ProductName",
-                    HeaderText = "المنتج",
-                    FillWeight = 135F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "UnitName",
-                    DataPropertyName = "UnitName",
-                    HeaderText = "الوحدة",
-                    FillWeight = 65F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Quantity",
-                    DataPropertyName = "Quantity",
-                    HeaderText = "الكمية",
-                    FillWeight = 65F,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "QtyBase",
-                    DataPropertyName = "QtyBase",
-                    HeaderText = "الكمية الأساسية",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "UnitPrice",
-                    DataPropertyName = "UnitPrice",
-                    HeaderText = "سعر الوحدة",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "LineTotal",
-                    DataPropertyName = "LineTotal",
-                    HeaderText = "الإجمالي",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "BatchNo",
-                    DataPropertyName = "BatchNo",
-                    HeaderText = "الدفعة",
-                    FillWeight = 70F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ExpiryDate",
-                    DataPropertyName = "ExpiryDate",
-                    HeaderText = "الصلاحية",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "d" }
-                }
-            });
             this.linesGrid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                     System.Windows.Forms.AnchorStyles.Bottom |
                                     System.Windows.Forms.AnchorStyles.Left |

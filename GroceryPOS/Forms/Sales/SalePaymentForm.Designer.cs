@@ -53,45 +53,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyCode",
-                    DataPropertyName = "CurrencyCode",
-                    HeaderText = "العملة",
-                    FillWeight = 45F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CurrencyName",
-                    DataPropertyName = "CurrencyName",
-                    HeaderText = "الوصف",
-                    FillWeight = 80F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "RateToBase",
-                    DataPropertyName = "RateToBase",
-                    HeaderText = "سعر الصرف",
-                    FillWeight = 75F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N6" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "AmountPaid",
-                    DataPropertyName = "AmountPaid",
-                    HeaderText = "المبلغ المدفوع",
-                    FillWeight = 100F,
-                    DefaultCellStyle = { Format = "N4" }
-                }
-            });
             this.grid.Anchor = System.Windows.Forms.AnchorStyles.Top |
                                System.Windows.Forms.AnchorStyles.Bottom |
                                System.Windows.Forms.AnchorStyles.Left |

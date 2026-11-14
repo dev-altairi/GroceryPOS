@@ -110,46 +110,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Id",
-                    DataPropertyName = "Id",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Name",
-                    DataPropertyName = "Name",
-                    HeaderText = "اسم المورد",
-                    FillWeight = 140F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Phone",
-                    DataPropertyName = "Phone",
-                    HeaderText = "الهاتف",
-                    FillWeight = 85F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Address",
-                    DataPropertyName = "Address",
-                    HeaderText = "العنوان",
-                    FillWeight = 120F
-                },
-                new System.Windows.Forms.DataGridViewCheckBoxColumn
-                {
-                    Name = "IsActive",
-                    DataPropertyName = "IsActive",
-                    HeaderText = "نشط",
-                    FillWeight = 55F
-                }
-            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";

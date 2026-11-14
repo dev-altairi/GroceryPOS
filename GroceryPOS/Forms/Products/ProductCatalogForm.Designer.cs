@@ -138,108 +138,10 @@ namespace GroceryPOS
             //
             this.productsGrid.AllowUserToAddRows = false;
             this.productsGrid.AllowUserToDeleteRows = false;
-            this.productsGrid.AutoGenerateColumns = false;
+            this.productsGrid.AutoGenerateColumns = true;
             this.productsGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.productsGrid.BackgroundColor = System.Drawing.Color.White;
             this.productsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.productsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Id",
-                    DataPropertyName = "Id",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Sku",
-                    DataPropertyName = "Sku",
-                    HeaderText = "SKU",
-                    FillWeight = 75F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Name",
-                    DataPropertyName = "Name",
-                    HeaderText = "اسم المنتج",
-                    FillWeight = 170F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "CategoryName",
-                    DataPropertyName = "CategoryName",
-                    HeaderText = "التصنيف",
-                    FillWeight = 100F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "BaseUnitName",
-                    DataPropertyName = "BaseUnitName",
-                    HeaderText = "الوحدة",
-                    FillWeight = 65F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Barcode",
-                    DataPropertyName = "Barcode",
-                    HeaderText = "الباركود",
-                    FillWeight = 110F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "RetailPrice",
-                    DataPropertyName = "RetailPrice",
-                    HeaderText = "سعر البيع",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N2" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "WholesalePrice",
-                    DataPropertyName = "WholesalePrice",
-                    HeaderText = "سعر الجملة",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N2" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "StockQuantity",
-                    DataPropertyName = "StockQuantity",
-                    HeaderText = "المخزون",
-                    FillWeight = 70F,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "MinStock",
-                    DataPropertyName = "MinStock",
-                    HeaderText = "الحد الأدنى",
-                    FillWeight = 70F,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "TracksExpiry",
-                    DataPropertyName = "TracksExpiry",
-                    HeaderText = "يتطلب صلاحية",
-                    FillWeight = 65F,
-                    DefaultCellStyle =
-                    {
-                        Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-                    }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "IsActive",
-                    DataPropertyName = "IsActive",
-                    HeaderText = "نشط",
-                    FillWeight = 55F,
-                    DefaultCellStyle =
-                    {
-                        Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-                    }
-                }
-            });
             this.productsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.productsGrid.MultiSelect = false;
             this.productsGrid.Name = "productsGrid";

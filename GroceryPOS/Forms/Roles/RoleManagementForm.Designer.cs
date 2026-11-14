@@ -92,53 +92,9 @@ namespace GroceryPOS
             //
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
-            this.grid.AutoGenerateColumns = false;
+            this.grid.AutoGenerateColumns = true;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
-            this.grid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Id",
-                    DataPropertyName = "Id",
-                    Visible = false
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Name",
-                    DataPropertyName = "Name",
-                    HeaderText = "اسم الدور",
-                    FillWeight = 95F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Description",
-                    DataPropertyName = "Description",
-                    HeaderText = "الوصف",
-                    FillWeight = 120F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "PermissionNames",
-                    DataPropertyName = "PermissionNames",
-                    HeaderText = "الصلاحيات",
-                    FillWeight = 210F
-                },
-                new System.Windows.Forms.DataGridViewCheckBoxColumn
-                {
-                    Name = "IsSystem",
-                    DataPropertyName = "IsSystem",
-                    HeaderText = "نظام",
-                    FillWeight = 50F
-                },
-                new System.Windows.Forms.DataGridViewCheckBoxColumn
-                {
-                    Name = "IsActive",
-                    DataPropertyName = "IsActive",
-                    HeaderText = "نشط",
-                    FillWeight = 50F
-                }
-            });
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";

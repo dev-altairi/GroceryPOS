@@ -140,42 +140,9 @@ namespace GroceryPOS
             //
             this.resultsGrid.AllowUserToAddRows = false;
             this.resultsGrid.AllowUserToDeleteRows = false;
-            this.resultsGrid.AutoGenerateColumns = false;
+            this.resultsGrid.AutoGenerateColumns = true;
             this.resultsGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.resultsGrid.BackgroundColor = System.Drawing.Color.White;
-            this.resultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "DisplayName",
-                    DataPropertyName = "DisplayName",
-                    HeaderText = "المنتج والوحدة",
-                    FillWeight = 150F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Barcode",
-                    DataPropertyName = "Barcode",
-                    HeaderText = "الباركود",
-                    FillWeight = 70F
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "RetailPrice",
-                    DataPropertyName = "RetailPrice",
-                    HeaderText = "سعر البيع",
-                    FillWeight = 65F,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "AvailableQuantity",
-                    DataPropertyName = "AvailableQuantity",
-                    HeaderText = "المخزون الإجمالي",
-                    FillWeight = 75F,
-                    DefaultCellStyle = { Format = "N3" }
-                }
-            });
             this.resultsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultsGrid.MultiSelect = false;
             this.resultsGrid.Name = "resultsGrid";
@@ -194,55 +161,9 @@ namespace GroceryPOS
             //
             this.cartGrid.AllowUserToAddRows = false;
             this.cartGrid.AllowUserToDeleteRows = false;
-            this.cartGrid.AutoGenerateColumns = false;
+            this.cartGrid.AutoGenerateColumns = true;
             this.cartGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cartGrid.BackgroundColor = System.Drawing.Color.White;
-            this.cartGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[]
-            {
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "ProductName",
-                    DataPropertyName = "ProductName",
-                    HeaderText = "المنتج",
-                    FillWeight = 110F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "UnitName",
-                    DataPropertyName = "UnitName",
-                    HeaderText = "الوحدة",
-                    FillWeight = 55F,
-                    ReadOnly = true
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "Quantity",
-                    DataPropertyName = "Quantity",
-                    HeaderText = "الكمية",
-                    FillWeight = 55F,
-                    DefaultCellStyle = { Format = "N3" }
-                },
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "UnitPrice",
-                    DataPropertyName = "UnitPrice",
-                    HeaderText = "سعر الوحدة",
-                    FillWeight = 65F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N4" }
-                },
-                this.discountColumn,
-                new System.Windows.Forms.DataGridViewTextBoxColumn
-                {
-                    Name = "LineTotal",
-                    DataPropertyName = "LineTotal",
-                    HeaderText = "الإجمالي",
-                    FillWeight = 70F,
-                    ReadOnly = true,
-                    DefaultCellStyle = { Format = "N4" }
-                }
-            });
             this.cartGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cartGrid.MultiSelect = false;
             this.cartGrid.Name = "cartGrid";
