@@ -7,6 +7,139 @@ using System.Windows.Forms;
 
 namespace GroceryPOS
 {
+    public partial class PasswordManagementForm : Form
+    {
+        private readonly AuthenticatedUser user;
+        private readonly int? targetUserId;
+        private readonly bool forcedChange;
+
+        public PasswordManagementForm()
+        {
+            InitializeComponent();
+        }
+
+        internal PasswordManagementForm(AuthenticatedUser authenticatedUser, bool requireChange)
+            : this()
+        {
+            user = authenticatedUser;
+            forcedChange = requireChange;
+            ConfigureMode(null);
+            saveButton.Click += SaveButton_Click;
+        }
+
+        internal PasswordManagementForm(
+            AuthenticatedUser administrator,
+            int targetId,
+            string targetName)
+            : this()
+        {
+            user = administrator;
+            targetUserId = targetId;
+            ConfigureMode(targetName);
+            saveButton.Click += SaveButton_Click;
+        }
+
+        private void ConfigureMode(string targetName)
+        {
+            bool isReset = targetUserId.HasValue;
+            Text = isReset ? "إعادة تعيين كلمة المرور" : "تغيير كلمة المرور";
+            ClientSize = new Size(520, isReset ? 330 : 390);
+
+            instructionLabel.Text = isReset
+                ? "أدخل كلمة مرور مؤقتة للمستخدم " + targetName + ". سيُطلب منه تغييرها عند الدخول."
+                : forcedChange
+                    ? "يجب تغيير كلمة المرور المؤقتة قبل متابعة استخدام النظام."
+                    : "أدخل كلمة المرور الحالية ثم كلمة المرور الجديدة.";
+            currentPasswordLabel.Visible = !isReset;
+            currentPasswordTextBox.Visible = !isReset;
+            newPasswordLabel.Location = new Point(235, isReset ? 74 : 129);
+            newPasswordTextBox.Location = new Point(35, isReset ? 70 : 125);
+            confirmPasswordLabel.Location = new Point(370, isReset ? 129 : 184);
+            confirmPasswordTextBox.Location = new Point(35, isReset ? 125 : 180);
+            saveButton.Text = isReset ? "إعادة التعيين" : "حفظ";
+            saveButton.Location = new Point(295, isReset ? 195 : 250);
+            cancelButton.Location = new Point(180, isReset ? 195 : 250);
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            if (!string.Equals(
+                    newPasswordTextBox.Text,
+                    confirmPasswordTextBox.Text,
+                    StringComparison.Ordinal))
+            {
+                MessageBox.Show("كلمتا المرور غير متطابقتين.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                confirmPasswordTextBox.Clear();
+                confirmPasswordTextBox.Focus();
+                return;
+            }
+
+            try
+            {
+                if (targetUserId.HasValue)
+                {
+                    PasswordService.ResetPassword(user, targetUserId.Value, newPasswordTextBox.Text);
+                }
+                else
+                {
+                    PasswordService.ChangeOwnPassword(
+                        user,
+                        currentPasswordTextBox.Text,
+                        newPasswordTextBox.Text);
+                }
+
+                currentPasswordTextBox?.Clear();
+                newPasswordTextBox.Clear();
+                confirmPasswordTextBox.Clear();
+                MessageBox.Show(
+                    targetUserId.HasValue
+                        ? "تمت إعادة تعيين كلمة المرور. سيُطلب من المستخدم تغييرها عند الدخول التالي."
+                        : "تم تغيير كلمة المرور بنجاح.",
+                    Text,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (ArgumentException error)
+            {
+                MessageBox.Show(error.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (InvalidOperationException error)
+            {
+                MessageBox.Show(error.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (UnauthorizedAccessException error)
+            {
+                MessageBox.Show(error.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (SqlException error)
+            {
+                ShowDatabaseError(error);
+            }
+        }
+
+        private void ShowDatabaseError(Exception error)
+        {
+            string message = "تعذر حفظ تغيير كلمة المرور بسبب مشكلة في قاعدة البيانات.";
+            try
+            {
+                AppLogger.Write(error);
+                message += Environment.NewLine + "حُفظت التفاصيل التقنية في سجل التطبيق.";
+            }
+            catch (IOException)
+            {
+                message += Environment.NewLine + "تعذر حفظ سجل الخطأ.";
+            }
+            catch (UnauthorizedAccessException)
+            {
+                message += Environment.NewLine + "تعذر حفظ سجل الخطأ بسبب الأذونات.";
+            }
+
+            MessageBox.Show(message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
     internal static class PasswordService
     {
         internal static void ChangeOwnPassword(
@@ -211,139 +344,6 @@ namespace GroceryPOS
                 command.Parameters.Add("@NewValues", SqlDbType.NVarChar, -1).Value = newValues;
                 command.ExecuteNonQuery();
             }
-        }
-    }
-
-    public partial class PasswordManagementForm : Form
-    {
-        private readonly AuthenticatedUser user;
-        private readonly int? targetUserId;
-        private readonly bool forcedChange;
-
-        public PasswordManagementForm()
-        {
-            InitializeComponent();
-        }
-
-        internal PasswordManagementForm(AuthenticatedUser authenticatedUser, bool requireChange)
-            : this()
-        {
-            user = authenticatedUser;
-            forcedChange = requireChange;
-            ConfigureMode(null);
-            saveButton.Click += SaveButton_Click;
-        }
-
-        internal PasswordManagementForm(
-            AuthenticatedUser administrator,
-            int targetId,
-            string targetName)
-            : this()
-        {
-            user = administrator;
-            targetUserId = targetId;
-            ConfigureMode(targetName);
-            saveButton.Click += SaveButton_Click;
-        }
-
-        private void ConfigureMode(string targetName)
-        {
-            bool isReset = targetUserId.HasValue;
-            Text = isReset ? "إعادة تعيين كلمة المرور" : "تغيير كلمة المرور";
-            ClientSize = new Size(520, isReset ? 330 : 390);
-
-            instructionLabel.Text = isReset
-                ? "أدخل كلمة مرور مؤقتة للمستخدم " + targetName + ". سيُطلب منه تغييرها عند الدخول."
-                : forcedChange
-                    ? "يجب تغيير كلمة المرور المؤقتة قبل متابعة استخدام النظام."
-                    : "أدخل كلمة المرور الحالية ثم كلمة المرور الجديدة.";
-            currentPasswordLabel.Visible = !isReset;
-            currentPasswordTextBox.Visible = !isReset;
-            newPasswordLabel.Location = new Point(235, isReset ? 74 : 129);
-            newPasswordTextBox.Location = new Point(35, isReset ? 70 : 125);
-            confirmPasswordLabel.Location = new Point(370, isReset ? 129 : 184);
-            confirmPasswordTextBox.Location = new Point(35, isReset ? 125 : 180);
-            saveButton.Text = isReset ? "إعادة التعيين" : "حفظ";
-            saveButton.Location = new Point(295, isReset ? 195 : 250);
-            cancelButton.Location = new Point(180, isReset ? 195 : 250);
-        }
-
-        private void SaveButton_Click(object sender, EventArgs e)
-        {
-            if (!string.Equals(
-                    newPasswordTextBox.Text,
-                    confirmPasswordTextBox.Text,
-                    StringComparison.Ordinal))
-            {
-                MessageBox.Show("كلمتا المرور غير متطابقتين.", Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                confirmPasswordTextBox.Clear();
-                confirmPasswordTextBox.Focus();
-                return;
-            }
-
-            try
-            {
-                if (targetUserId.HasValue)
-                {
-                    PasswordService.ResetPassword(user, targetUserId.Value, newPasswordTextBox.Text);
-                }
-                else
-                {
-                    PasswordService.ChangeOwnPassword(
-                        user,
-                        currentPasswordTextBox.Text,
-                        newPasswordTextBox.Text);
-                }
-
-                currentPasswordTextBox?.Clear();
-                newPasswordTextBox.Clear();
-                confirmPasswordTextBox.Clear();
-                MessageBox.Show(
-                    targetUserId.HasValue
-                        ? "تمت إعادة تعيين كلمة المرور. سيُطلب من المستخدم تغييرها عند الدخول التالي."
-                        : "تم تغيير كلمة المرور بنجاح.",
-                    Text,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
-            }
-            catch (ArgumentException error)
-            {
-                MessageBox.Show(error.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            catch (InvalidOperationException error)
-            {
-                MessageBox.Show(error.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            catch (UnauthorizedAccessException error)
-            {
-                MessageBox.Show(error.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            catch (SqlException error)
-            {
-                ShowDatabaseError(error);
-            }
-        }
-
-        private void ShowDatabaseError(Exception error)
-        {
-            string message = "تعذر حفظ تغيير كلمة المرور بسبب مشكلة في قاعدة البيانات.";
-            try
-            {
-                AppLogger.Write(error);
-                message += Environment.NewLine + "حُفظت التفاصيل التقنية في سجل التطبيق.";
-            }
-            catch (IOException)
-            {
-                message += Environment.NewLine + "تعذر حفظ سجل الخطأ.";
-            }
-            catch (UnauthorizedAccessException)
-            {
-                message += Environment.NewLine + "تعذر حفظ سجل الخطأ بسبب الأذونات.";
-            }
-
-            MessageBox.Show(message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

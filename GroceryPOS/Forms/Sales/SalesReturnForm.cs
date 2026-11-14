@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace GroceryPOS
@@ -7,6 +8,11 @@ namespace GroceryPOS
         public SalesReturnForm()
         {
             InitializeComponent();
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                return;
+            }
+
             linesGrid.DataSource = lines;
         }
     }

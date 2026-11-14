@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -49,166 +49,172 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Authentication.cs" />
-    <Compile Include="LoginForm.cs">
+    <Compile Include="Forms\Authentication\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginForm.Designer.cs">
+    <Compile Include="Forms\Authentication\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OwnerSetupForm.cs">
+    <Compile Include="Forms\Authentication\OwnerSetupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OwnerSetupForm.Designer.cs">
+    <Compile Include="Forms\Authentication\OwnerSetupForm.Designer.cs">
       <DependentUpon>OwnerSetupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DashboardForm.cs">
+    <Compile Include="Forms\Dashboard\DashboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DashboardForm.Designer.cs">
+    <Compile Include="Forms\Dashboard\DashboardForm.Designer.cs">
       <DependentUpon>DashboardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Products.cs" />
-    <Compile Include="ProductCatalogForm.cs">
+    <Compile Include="Forms\Products\ProductCatalogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProductCatalogForm.Designer.cs">
+    <Compile Include="Forms\Products\ProductCatalogForm.Designer.cs">
       <DependentUpon>ProductCatalogForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProductEditorForm.cs">
+    <Compile Include="Forms\Products\ProductEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProductEditorForm.Designer.cs">
+    <Compile Include="Forms\Products\ProductEditorForm.Designer.cs">
       <DependentUpon>ProductEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CatalogManagement.cs" />
-    <Compile Include="CategoryManagementForm.cs">
+    <Compile Include="Forms\Categories\CategoryManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CategoryManagementForm.Designer.cs">
+    <Compile Include="Forms\Categories\CategoryManagementForm.Designer.cs">
       <DependentUpon>CategoryManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CategoryEditorForm.cs">
+    <Compile Include="Forms\Categories\CategoryEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CategoryEditorForm.Designer.cs">
+    <Compile Include="Forms\Categories\CategoryEditorForm.Designer.cs">
       <DependentUpon>CategoryEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProductUnitsForm.cs">
+    <Compile Include="Forms\Products\ProductUnitsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProductUnitsForm.Designer.cs">
+    <Compile Include="Forms\Products\ProductUnitsForm.Designer.cs">
       <DependentUpon>ProductUnitsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserManagement.cs" />
-    <Compile Include="UserManagementForm.cs">
+    <Compile Include="Forms\Users\UserManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UserManagementForm.Designer.cs">
+    <Compile Include="Forms\Users\UserManagementForm.Designer.cs">
       <DependentUpon>UserManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserEditorForm.cs">
+    <Compile Include="Forms\Users\UserEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UserEditorForm.Designer.cs">
+    <Compile Include="Forms\Users\UserEditorForm.Designer.cs">
       <DependentUpon>UserEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RoleManagement.cs" />
-    <Compile Include="RoleManagementForm.cs">
+    <Compile Include="Forms\Roles\RoleManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RoleManagementForm.Designer.cs">
+    <Compile Include="Forms\Roles\RoleManagementForm.Designer.cs">
       <DependentUpon>RoleManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RoleEditorForm.cs">
+    <Compile Include="Forms\Roles\RoleEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RoleEditorForm.Designer.cs">
+    <Compile Include="Forms\Roles\RoleEditorForm.Designer.cs">
       <DependentUpon>RoleEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PasswordManagement.cs">
+    <Compile Include="Forms\Authentication\PasswordManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PasswordManagement.Designer.cs">
+    <Compile Include="Forms\Authentication\PasswordManagement.Designer.cs">
       <DependentUpon>PasswordManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Purchasing.cs" />
-    <Compile Include="PurchasingForms.cs" />
-    <Compile Include="PurchaseInvoiceEditorForm.cs">
+    <Compile Include="Forms\Purchasing\PurchasingForms.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PurchaseInvoiceEditorForm.Designer.cs">
+    <Compile Include="Forms\Purchasing\PurchaseInvoiceEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Purchasing\PurchaseInvoiceEditorForm.Designer.cs">
       <DependentUpon>PurchaseInvoiceEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PurchasesForm.cs">
+    <Compile Include="Forms\Purchasing\PurchasesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PurchasesForm.Designer.cs">
+    <Compile Include="Forms\Purchasing\PurchasesForm.Designer.cs">
       <DependentUpon>PurchasesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PurchaseInvoiceDetailsForm.cs">
+    <Compile Include="Forms\Purchasing\PurchaseInvoiceDetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PurchaseInvoiceDetailsForm.Designer.cs">
+    <Compile Include="Forms\Purchasing\PurchaseInvoiceDetailsForm.Designer.cs">
       <DependentUpon>PurchaseInvoiceDetailsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SupplierManagementForm.cs">
+    <Compile Include="Forms\Purchasing\SupplierManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SupplierManagementForm.Designer.cs">
+    <Compile Include="Forms\Purchasing\SupplierManagementForm.Designer.cs">
       <DependentUpon>SupplierManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SupplierEditorForm.cs">
+    <Compile Include="Forms\Purchasing\SupplierEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SupplierEditorForm.Designer.cs">
+    <Compile Include="Forms\Purchasing\SupplierEditorForm.Designer.cs">
       <DependentUpon>SupplierEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Sales.cs" />
-    <Compile Include="SalesForms.cs" />
-    <Compile Include="SalesForm.cs">
+    <Compile Include="Forms\Sales\SalesForms.cs" />
+    <Compile Include="Forms\Sales\SalesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SalesForm.Designer.cs">
+    <Compile Include="Forms\Sales\SalesForm.Designer.cs">
       <DependentUpon>SalesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SalePaymentForm.cs">
+    <Compile Include="Forms\Sales\SalePaymentForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SalePaymentForm.Designer.cs">
+    <Compile Include="Forms\Sales\SalePaymentForm.Designer.cs">
       <DependentUpon>SalePaymentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SalesReturns.cs" />
-    <Compile Include="SalesReturnForms.cs" />
-    <Compile Include="SalesReturnForm.cs">
+    <Compile Include="Forms\Sales\SalesReturnForms.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SalesReturnForm.Designer.cs">
+    <Compile Include="Forms\Sales\SalesReturnForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Sales\SalesReturnForm.Designer.cs">
       <DependentUpon>SalesReturnForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Shifts.cs" />
-    <Compile Include="ShiftsForms.cs" />
-    <Compile Include="ShiftManagementForm.cs">
+    <Compile Include="Forms\Shifts\ShiftsForms.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ShiftManagementForm.Designer.cs">
+    <Compile Include="Forms\Shifts\ShiftManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Shifts\ShiftManagementForm.Designer.cs">
       <DependentUpon>ShiftManagementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ShiftOpeningForm.cs">
+    <Compile Include="Forms\Shifts\ShiftOpeningForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ShiftOpeningForm.Designer.cs">
+    <Compile Include="Forms\Shifts\ShiftOpeningForm.Designer.cs">
       <DependentUpon>ShiftOpeningForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CashMovementForm.cs">
+    <Compile Include="Forms\Shifts\CashMovementForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CashMovementForm.Designer.cs">
+    <Compile Include="Forms\Shifts\CashMovementForm.Designer.cs">
       <DependentUpon>CashMovementForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ShiftClosingForm.cs">
+    <Compile Include="Forms\Shifts\ShiftClosingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ShiftClosingForm.Designer.cs">
+    <Compile Include="Forms\Shifts\ShiftClosingForm.Designer.cs">
       <DependentUpon>ShiftClosingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -236,3 +242,4 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
+
